@@ -54,6 +54,8 @@
       --accent-green-hover: #047857;
       --accent-amber: #d97706;
       --accent-red: #dc2626;
+      --accent-blue: #2563eb;
+      --accent-purple: #7c3aed;
 
       --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
       --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
@@ -379,10 +381,17 @@
       color: var(--accent-green);
     }
 
-    .completed-stat-formula {
-      font-family: 'JetBrains Mono', monospace;
+    .completed-stat-rank {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #4338ca;
+    }
+
+    .completed-stat-attempts {
+      font-family: 'Inter', sans-serif;
       font-weight: 700;
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       color: var(--text-main);
     }
 
@@ -783,20 +792,27 @@
       margin-bottom: 2px;
     }
 
-    .result-time-box {
+    .result-stats-row {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      margin: 6px 0;
+    }
+
+    .result-stat-box {
+      flex: 1;
       background: var(--bg-subtle);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      padding: 14px;
+      padding: 12px 10px;
       text-align: center;
       display: flex;
       flex-direction: column;
       gap: 2px;
-      margin: 6px 0;
     }
 
-    .result-time-label {
-      font-size: 0.72rem;
+    .result-stat-label {
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-muted);
@@ -806,9 +822,17 @@
     .result-time-value {
       font-family: 'JetBrains Mono', monospace;
       font-variant-numeric: tabular-nums;
-      font-size: 2.4rem;
+      font-size: 2rem;
       font-weight: 800;
       color: var(--accent-green);
+    }
+
+    .result-rank-value {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #4338ca;
+      margin-top: 4px;
     }
 
     .result-equation-box {
@@ -824,7 +848,7 @@
 
     .result-equation-value {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: var(--text-main);
       letter-spacing: 0.02em;
@@ -1088,20 +1112,24 @@
       <div class="completed-home-view" id="completedHomeView" style="display: none;">
         <div class="completed-card">
           <div class="completed-card-badge">🔥 Challenge Completed</div>
-          <h2 class="completed-card-title">You Solved Today's Puzzle!</h2>
+          <h2 class="completed-card-title">Today's Summary</h2>
           <p class="completed-card-subtitle">Come back at midnight for a new challenge</p>
 
           <div class="completed-stats-container">
             <div class="completed-stat-box">
-              <span class="completed-stat-label">⏱️ Time</span>
-              <span class="completed-stat-value" id="homeCompletedTime">00:00.00</span>
+              <span class="completed-stat-label">⏱️ TIME</span>
+              <span class="completed-stat-value" id="homeCompletedTime">00:03.22</span>
             </div>
             <div class="completed-stat-box">
-              <span class="completed-stat-label">🧩 Equation</span>
-              <span class="completed-stat-formula" id="homeCompletedFormula">2 * 3 - 5 + 3 = 4</span>
+              <span class="completed-stat-label">🎖️ RANK</span>
+              <span class="completed-stat-rank" id="homeCompletedRank">Tier 2 (Master 👑)</span>
             </div>
             <div class="completed-stat-box">
-              <span class="completed-stat-label">🔥 Streak</span>
+              <span class="completed-stat-label">🎯 ATTEMPTS</span>
+              <span class="completed-stat-attempts" id="homeCompletedAttempts">1st try!</span>
+            </div>
+            <div class="completed-stat-box">
+              <span class="completed-stat-label">🔥 STREAK</span>
               <span class="completed-stat-streak" id="homeCompletedStreak">1 Day</span>
             </div>
           </div>
@@ -1187,10 +1215,16 @@
         <h2 class="modal-title" id="resultModalTitle" style="font-size: 1.5rem; color: var(--accent-green);">SOLVED!</h2>
       </div>
       <div class="modal-content">
-        <!-- Clear Time Display -->
-        <div class="result-time-box">
-          <span class="result-time-label">TIME</span>
-          <span class="result-time-value" id="resultTimeDisplay">00:00.00</span>
+        <!-- Clear Time & Rank Display -->
+        <div class="result-stats-row">
+          <div class="result-stat-box">
+            <span class="result-stat-label">TIME</span>
+            <span class="result-time-value" id="resultTimeDisplay">00:00.00</span>
+          </div>
+          <div class="result-stat-box">
+            <span class="result-stat-label">RANK</span>
+            <span class="result-rank-value" id="resultRankDisplay">Master 👑</span>
+          </div>
         </div>
 
         <!-- Cleared Equation -->
@@ -1222,6 +1256,19 @@
   </div>
 
   <script>
+    // --- Speed Tier Rank System ---
+    function getSpeedTier(elapsedMs) {
+      if (elapsedMs < 3000) return { tier: 1, name: 'Godlike ⚡', full: 'Tier 1 (Godlike ⚡)' };
+      if (elapsedMs < 5000) return { tier: 2, name: 'Master 👑', full: 'Tier 2 (Master 👑)' };
+      if (elapsedMs < 8000) return { tier: 3, name: 'Diamond 💎', full: 'Tier 3 (Diamond 💎)' };
+      if (elapsedMs < 12000) return { tier: 4, name: 'Platinum 🏆', full: 'Tier 4 (Platinum 🏆)' };
+      if (elapsedMs < 17000) return { tier: 5, name: 'Gold 🥇', full: 'Tier 5 (Gold 🥇)' };
+      if (elapsedMs < 25000) return { tier: 6, name: 'Silver 🥈', full: 'Tier 6 (Silver 🥈)' };
+      if (elapsedMs < 40000) return { tier: 7, name: 'Bronze 🥉', full: 'Tier 7 (Bronze 🥉)' };
+      if (elapsedMs < 60000) return { tier: 8, name: 'Iron 🛡️', full: 'Tier 8 (Iron 🛡️)' };
+      return { tier: 9, name: 'Turtle 🐢', full: 'Tier 9 (Turtle 🐢)' };
+    }
+
     // --- Daily Seed PRNG & 5-Digit Solver ---
 
     // 1. Date formatting & Seed conversion
@@ -1569,7 +1616,8 @@
     const boardStartOverlay = document.getElementById('boardStartOverlay');
     const completedHomeView = document.getElementById('completedHomeView');
     const homeCompletedTime = document.getElementById('homeCompletedTime');
-    const homeCompletedFormula = document.getElementById('homeCompletedFormula');
+    const homeCompletedRank = document.getElementById('homeCompletedRank');
+    const homeCompletedAttempts = document.getElementById('homeCompletedAttempts');
     const homeCompletedStreak = document.getElementById('homeCompletedStreak');
     const btnHomeShare = document.getElementById('btnHomeShare');
     const btnStartGame = document.getElementById('btnStartGame');
@@ -1587,6 +1635,7 @@
     const resultModalTitle = document.getElementById('resultModalTitle');
     const resultBadge = document.getElementById('resultBadge');
     const resultTimeDisplay = document.getElementById('resultTimeDisplay');
+    const resultRankDisplay = document.getElementById('resultRankDisplay');
     const resultEquationDisplay = document.getElementById('resultEquationDisplay');
     const resultStreakText = document.getElementById('resultStreakText');
     const btnCopyResult = document.getElementById('btnCopyResult');
@@ -1684,8 +1733,12 @@
         keypadContainer.style.display = 'none';
         completedHomeView.style.display = 'flex';
 
+        const attempts = todayRecord.attempts || 1;
+        const tier = getSpeedTier(todayRecord.elapsedMs || 0);
+
         homeCompletedTime.textContent = todayRecord.timeStr;
-        homeCompletedFormula.textContent = todayRecord.equation;
+        homeCompletedRank.textContent = tier.full;
+        homeCompletedAttempts.textContent = attempts === 1 ? '1st try!' : `${attempts} attempts`;
         homeCompletedStreak.textContent = `${StorageService.getStreak()} ${StorageService.getStreak() === 1 ? 'Day' : 'Days'}`;
       } else {
         // Render Active Challenge Board View
@@ -1941,12 +1994,15 @@
       const streak = StorageService.recordDailySuccess(todayStr, finalTimeStr, finalEquationStr, elapsedMs, totalAttempts);
       refreshStreakUI();
 
+      const tier = getSpeedTier(elapsedMs);
+
       resultModalTitle.textContent = 'SOLVED!';
       resultBadge.textContent = '🎉';
       resultStreakText.style.display = 'block';
       resultStreakText.textContent = `🔥 Streak: ${streak}`;
 
       resultTimeDisplay.textContent = finalTimeStr;
+      resultRankDisplay.textContent = tier.name;
       resultEquationDisplay.textContent = finalEquationStr;
 
       setTimeout(() => {
@@ -1980,21 +2036,12 @@
       if (e.target === resultModal) closeResultModal();
     });
 
-    // Compact Tile Share Formatter
+    // Compact Tile Share Formatter with 9 Speed Tiers
     function generateShareText(timeStr, elapsed, streak, attempts) {
       const todayStr = getTodayDateString();
+      const tier = getSpeedTier(elapsed);
 
-      // Tier Emoji
-      let tierEmoji = '🐢';
-      if (elapsed < 5000) {
-        tierEmoji = '⚡';
-      } else if (elapsed < 15000) {
-        tierEmoji = '🚀';
-      } else if (elapsed < 30000) {
-        tierEmoji = '🧠';
-      }
-
-      // Format Time
+      // Format Time (e.g. 03.22s)
       let formattedTime = timeStr;
       const parts = timeStr.split(':');
       if (parts.length === 2) {
@@ -2024,7 +2071,7 @@
       const tileLine = `${tiles}${attemptLabel}`;
 
       return `⚡ SpeedEqual ${todayStr}
-⏱️ ${formattedTime} ${tierEmoji} | 🔥 Streak: ${streak}
+⏱️ ${formattedTime} (${tier.name}) | 🔥 Streak: ${streak}
 ${tileLine}
 
 Can you beat my speed?
