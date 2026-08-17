@@ -1016,17 +1016,53 @@
       margin-top: 2px;
     }
 
-    .example-box {
+    /* Visual Mini Tiles in Help Modal */
+    .example-tiles-row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(3px, 1vw, 5px);
+      width: 100%;
+      padding: 10px 4px;
       background: var(--bg-subtle);
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid var(--border-strong);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      margin: 4px 0;
+    }
+
+    .example-num-tile {
+      flex: 1 1 0;
+      max-width: 36px;
+      height: 40px;
+      background: #ffffff;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: 'JetBrains Mono', monospace;
       font-size: 1.05rem;
-      text-align: center;
+      font-weight: 800;
       color: var(--text-main);
-      font-weight: 700;
-      margin: 4px 0;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .example-op-tile {
+      flex: 1 1 0;
+      max-width: 36px;
+      height: 40px;
+      background: #ffffff;
+      border: 1.5px solid var(--text-main);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
     }
 
     /* Speed Tiers Guide Card in Help Modal */
@@ -1242,8 +1278,16 @@
           <span>Standard operator precedence applies (<code>*</code> before <code>+</code>/<code>-</code>). All slots must be filled!</span>
         </div>
 
-        <div class="example-box">
-          2 * 3 - 5 + 3 = 4
+        <div class="example-tiles-row" aria-label="Example Equation: 2 * 3 - 5 + 3 = 4">
+          <div class="example-num-tile">2</div>
+          <div class="example-op-tile">*</div>
+          <div class="example-num-tile">3</div>
+          <div class="example-op-tile">-</div>
+          <div class="example-num-tile">5</div>
+          <div class="example-op-tile">+</div>
+          <div class="example-num-tile">3</div>
+          <div class="example-op-tile">=</div>
+          <div class="example-num-tile">4</div>
         </div>
 
         <div class="rule-step">
