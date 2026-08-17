@@ -52,8 +52,6 @@
 
       --accent-green: #059669;
       --accent-green-hover: #047857;
-      --accent-purple: #7c3aed;
-      --accent-purple-hover: #6d28d9;
       --accent-amber: #d97706;
       --accent-red: #dc2626;
 
@@ -139,23 +137,6 @@
       margin-left: 1px;
     }
 
-    .mode-tag {
-      font-size: 0.7rem;
-      font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      display: none;
-    }
-
-    .mode-tag.practice {
-      display: inline-block;
-      background: #f3e8ff;
-      border: 1px solid #d8b4fe;
-      color: var(--accent-purple);
-    }
-
     .header-actions {
       display: flex;
       align-items: center;
@@ -228,13 +209,6 @@
       border: 1px solid var(--border-subtle);
       min-width: 220px;
       text-align: center;
-      transition: color 0.15s ease;
-    }
-
-    .stopwatch-display.practice {
-      color: var(--accent-purple);
-      background: #faf5ff;
-      border-color: #e9d5ff;
     }
 
     /* Board Container */
@@ -289,12 +263,12 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      background: rgba(255, 255, 255, 0.88);
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(4px);
       z-index: 10;
       transition: all 0.2s ease;
-      padding: 16px;
+      padding: 20px 16px;
       text-align: center;
     }
 
@@ -304,11 +278,31 @@
       visibility: hidden;
     }
 
+    .overlay-daily-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .overlay-challenge-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
+      padding: 3px 10px;
+      border-radius: 9999px;
+      border: 1px solid var(--border-subtle);
+    }
+
     .completed-message-box {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      max-width: 320px;
     }
 
     .completed-title {
@@ -323,6 +317,42 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
+    .completed-notice {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Countdown Widget */
+    .next-puzzle-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 8px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      margin-top: 4px;
+    }
+
+    .next-puzzle-label {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-subtle);
+    }
+
+    .next-puzzle-timer {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: 0.05em;
+    }
+
     /* Start / Action Buttons */
     .btn-start-game {
       background: var(--text-main);
@@ -331,7 +361,7 @@
       font-family: 'Inter', sans-serif;
       font-size: 1.05rem;
       font-weight: 700;
-      padding: 12px 28px;
+      padding: 12px 32px;
       border-radius: 9999px;
       cursor: pointer;
       box-shadow: var(--shadow-md);
@@ -349,27 +379,6 @@
 
     .btn-start-game:active {
       transform: translateY(1px);
-    }
-
-    .btn-practice-start {
-      background: var(--bg-surface);
-      color: var(--text-main);
-      border: 1px solid var(--border-strong);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      padding: 9px 20px;
-      border-radius: 9999px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-    }
-
-    .btn-practice-start:hover {
-      background: var(--bg-subtle);
-      border-color: var(--text-muted);
     }
 
     /* Number Card (5 numbers) - Compact Responsive */
@@ -739,13 +748,8 @@
       margin-top: 10px;
     }
 
-    .result-actions-row {
-      display: flex;
-      gap: 8px;
-    }
-
     .btn-action-primary {
-      flex: 1;
+      width: 100%;
       background: var(--accent-green);
       border: 1px solid var(--accent-green);
       color: #ffffff;
@@ -771,14 +775,14 @@
     }
 
     .btn-action-secondary {
-      flex: 1;
+      width: 100%;
       background: var(--bg-subtle);
       border: 1px solid var(--border-strong);
       color: var(--text-main);
       font-family: 'Inter', sans-serif;
       font-weight: 600;
       font-size: 0.95rem;
-      padding: 12px;
+      padding: 11px;
       border-radius: 8px;
       cursor: pointer;
       display: flex;
@@ -790,28 +794,6 @@
 
     .btn-action-secondary:hover {
       background: var(--border-subtle);
-    }
-
-    .btn-action-purple {
-      flex: 1;
-      background: var(--accent-purple);
-      border: 1px solid var(--accent-purple);
-      color: #ffffff;
-      font-family: 'Inter', sans-serif;
-      font-weight: 700;
-      font-size: 0.95rem;
-      padding: 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.12s ease;
-    }
-
-    .btn-action-purple:hover {
-      background: var(--accent-purple-hover);
     }
 
     /* Modal System */
@@ -955,10 +937,8 @@
       </div>
       <div class="logo-container">
         <h1 class="logo">SPEED<span class="logo-eq">EQUAL</span></h1>
-        <span class="mode-tag practice" id="modeTag">PRACTICE</span>
       </div>
       <div class="header-actions">
-        <button class="icon-btn" id="btnReturnDaily" style="display: none;" title="Back to Daily Challenge">🏠</button>
         <button class="icon-btn" id="btnHelp" aria-label="How to Play">?</button>
       </div>
     </header>
@@ -967,7 +947,7 @@
     <main class="game-area">
       <!-- Stopwatch Display -->
       <div class="stopwatch-wrapper">
-        <span class="stopwatch-label" id="stopwatchLabel">Daily Challenge</span>
+        <span class="stopwatch-label">Daily Challenge</span>
         <div class="stopwatch-display" id="stopwatchDisplay">00:00.00</div>
       </div>
 
@@ -976,12 +956,11 @@
         <!-- Start Challenge Overlay -->
         <div class="board-start-overlay" id="boardStartOverlay">
           <!-- State 1: Ready to Start Daily -->
-          <div id="overlayReadyDaily" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+          <div id="overlayReadyDaily" class="overlay-daily-header">
+            <span class="overlay-challenge-badge">Daily Challenge</span>
+            <div style="height: 6px;"></div>
             <button class="btn-start-game" id="btnStartGame">
               <span>⚡</span> START (SPACE)
-            </button>
-            <button class="btn-practice-start" id="btnGoPracticeFromReady">
-              <span>🎮</span> Practice Mode
             </button>
           </div>
 
@@ -989,22 +968,16 @@
           <div id="overlayCompletedDaily" class="completed-message-box" style="display: none;">
             <span class="completed-title">TODAY'S CHALLENGE COMPLETED! 🔥</span>
             <span class="completed-desc" id="completedDescText">Your Time: 00:00.00</span>
-            <div style="display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; justify-content: center;">
-              <button class="btn-action-primary" id="btnOverlayCopyResult"
-                style="padding: 9px 18px; font-size: 0.92rem;">
-                <span>📋</span> Share Result
-              </button>
-              <button class="btn-practice-start" id="btnGoPracticeFromCompleted"
-                style="padding: 9px 18px; font-size: 0.92rem;">
-                <span>🎮</span> Practice Mode
-              </button>
-            </div>
-          </div>
+            <p class="completed-notice">You've completed today's challenge. Come back tomorrow!</p>
 
-          <!-- State 3: Ready to Start Practice -->
-          <div id="overlayReadyPractice" style="display: none; flex-direction: column; align-items: center; gap: 10px;">
-            <button class="btn-start-game" id="btnStartPracticeGame" style="background: var(--accent-purple);">
-              <span>🎮</span> START PRACTICE
+            <div class="next-puzzle-box">
+              <span class="next-puzzle-label">Next Puzzle In</span>
+              <span class="next-puzzle-timer countdown-timer-text">--:--:--</span>
+            </div>
+
+            <button class="btn-action-primary" id="btnOverlayCopyResult"
+              style="margin-top: 6px; padding: 10px 20px; font-size: 0.92rem; width: auto;">
+              <span>📋</span> Share Result
             </button>
           </div>
         </div>
@@ -1114,29 +1087,20 @@
           <span class="result-equation-value" id="resultEquationDisplay">2 + 3 = 5</span>
         </div>
 
-        <!-- Streak Text (Daily Mode Only) -->
+        <!-- Streak Text -->
         <div class="result-streak-text" id="resultStreakText">🔥 1 Day Streak</div>
+
+        <!-- Next Puzzle Countdown in Modal -->
+        <div class="next-puzzle-box" style="margin: 4px 0 6px;">
+          <span class="next-puzzle-label">Next Puzzle In</span>
+          <span class="next-puzzle-timer countdown-timer-text">--:--:--</span>
+        </div>
 
         <!-- Action Buttons -->
         <div class="result-actions">
-          <div class="result-actions-row" id="dailyActionsRow">
-            <button class="btn-action-primary" id="btnCopyResult">
-              <span>📋</span> SHARE RESULT
-            </button>
-            <button class="btn-action-purple" id="btnGoPracticeFromResult">
-              <span>🎮</span> Practice Mode
-            </button>
-          </div>
-
-          <div class="result-actions-row" id="practiceActionsRow" style="display: none;">
-            <button class="btn-action-purple" id="btnNextPractice">
-              <span>🔄</span> Next Puzzle
-            </button>
-            <button class="btn-action-secondary" id="btnReturnDailyFromResult">
-              <span>🏠</span> Back to Daily
-            </button>
-          </div>
-
+          <button class="btn-action-primary" id="btnCopyResult">
+            <span>📋</span> SHARE RESULT
+          </button>
           <button class="btn-action-secondary" id="btnCloseResult">
             Close
           </button>
@@ -1146,7 +1110,7 @@
   </div>
 
   <script>
-    // --- Step 2 & 5: PRNG, Storage & 5-Digit Solver ---
+    // --- Daily Seed PRNG & 5-Digit Solver ---
 
     // 1. Date formatting & Seed conversion
     function getTodayDateString() {
@@ -1328,26 +1292,27 @@
       };
     }
 
-    // 6. Random Practice Game Generator (5 Digits)
-    function generatePracticeGame() {
-      let attempts = 0;
-      while (attempts < 500) {
-        const candidateDigits = [];
-        for (let i = 0; i < 5; i++) {
-          candidateDigits.push(Math.floor(Math.random() * 9) + 1);
-        }
-
-        const solutions = solve5Digits(candidateDigits);
-        if (solutions.length > 0) {
-          return {
-            digits: candidateDigits,
-            solutions: solutions
-          };
-        }
-        attempts++;
-      }
-      return { digits: [3, 2, 5, 1, 1], solutions: [] };
+    // --- Midnight Next Puzzle Timer ---
+    function getNextMidnightDiff() {
+      const now = new Date();
+      const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+      const diff = Math.max(0, midnight - now);
+      const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
+      const minutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+      const seconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+      return `${hours}:${minutes}:${seconds}`;
     }
+
+    function startMidnightTimer() {
+      const timerElems = document.querySelectorAll('.countdown-timer-text');
+      function tick() {
+        const text = getNextMidnightDiff();
+        timerElems.forEach(el => el.textContent = text);
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+    startMidnightTimer();
 
     // --- Pure HTML5 Canvas Confetti System ---
     const confettiCanvas = document.getElementById('confettiCanvas');
@@ -1473,13 +1438,11 @@
 
     // --- State & DOM Initialization ---
     const TOTAL_SLOTS = 4; // 4 slots for 5 digits
-    let gameMode = 'DAILY'; // 'DAILY' | 'PRACTICE'
     let gameState = 'READY'; // 'READY' | 'COUNTDOWN' | 'PLAYING' | 'FINISHED'
     let selectedSlotIndex = 0;
     let slotValues = Array(TOTAL_SLOTS).fill('');
 
     let currentDailyGame = null;
-    let currentPracticeGame = null;
 
     let timerStartTime = 0;
     let timerAnimFrame = null;
@@ -1493,19 +1456,9 @@
     const boardStartOverlay = document.getElementById('boardStartOverlay');
     const overlayReadyDaily = document.getElementById('overlayReadyDaily');
     const overlayCompletedDaily = document.getElementById('overlayCompletedDaily');
-    const overlayReadyPractice = document.getElementById('overlayReadyPractice');
     const completedDescText = document.getElementById('completedDescText');
     const btnStartGame = document.getElementById('btnStartGame');
-    const btnStartPracticeGame = document.getElementById('btnStartPracticeGame');
-    const btnGoPracticeFromReady = document.getElementById('btnGoPracticeFromReady');
-    const btnGoPracticeFromCompleted = document.getElementById('btnGoPracticeFromCompleted');
-    const btnGoPracticeFromResult = document.getElementById('btnGoPracticeFromResult');
-    const btnNextPractice = document.getElementById('btnNextPractice');
-    const btnReturnDaily = document.getElementById('btnReturnDaily');
-    const btnReturnDailyFromResult = document.getElementById('btnReturnDailyFromResult');
     const btnOverlayCopyResult = document.getElementById('btnOverlayCopyResult');
-    const modeTag = document.getElementById('modeTag');
-    const stopwatchLabel = document.getElementById('stopwatchLabel');
     const keypadContainer = document.getElementById('keypadContainer');
     const countdownOverlay = document.getElementById('countdownOverlay');
     const countdownNumber = document.getElementById('countdownNumber');
@@ -1522,8 +1475,6 @@
     const resultTimeDisplay = document.getElementById('resultTimeDisplay');
     const resultEquationDisplay = document.getElementById('resultEquationDisplay');
     const resultStreakText = document.getElementById('resultStreakText');
-    const dailyActionsRow = document.getElementById('dailyActionsRow');
-    const practiceActionsRow = document.getElementById('practiceActionsRow');
     const btnCopyResult = document.getElementById('btnCopyResult');
     const btnCloseResult = document.getElementById('btnCloseResult');
     const streakCountElem = document.getElementById('streakCount');
@@ -1588,18 +1539,12 @@
 
     // Setup Daily Mode Board
     function setupDailyMode() {
-      gameMode = 'DAILY';
       gameState = 'READY';
       wrongAttempts = 0;
       cancelAnimationFrame(timerAnimFrame);
 
       currentDailyGame = generateDailyGame();
 
-      // UI updates
-      modeTag.style.display = 'none';
-      btnReturnDaily.style.display = 'none';
-      stopwatchLabel.textContent = 'Daily Challenge';
-      stopwatchDisplay.className = 'stopwatch-display';
       stopwatchDisplay.textContent = '00:00.00';
 
       // Bind digits (5 numbers)
@@ -1622,49 +1567,13 @@
 
       if (todayRecord) {
         overlayReadyDaily.style.display = 'none';
-        overlayReadyPractice.style.display = 'none';
         overlayCompletedDaily.style.display = 'flex';
         completedDescText.textContent = `Your Time: ${todayRecord.timeStr} (${todayRecord.equation})`;
         stopwatchDisplay.textContent = todayRecord.timeStr;
       } else {
         overlayReadyDaily.style.display = 'flex';
-        overlayReadyPractice.style.display = 'none';
         overlayCompletedDaily.style.display = 'none';
       }
-    }
-
-    // Setup Practice Mode Board
-    function setupPracticeMode() {
-      gameMode = 'PRACTICE';
-      gameState = 'READY';
-      wrongAttempts = 0;
-      cancelAnimationFrame(timerAnimFrame);
-
-      currentPracticeGame = generatePracticeGame();
-
-      // UI updates
-      modeTag.style.display = 'inline-block';
-      btnReturnDaily.style.display = 'flex';
-      stopwatchLabel.textContent = 'Practice Mode';
-      stopwatchDisplay.className = 'stopwatch-display practice';
-      stopwatchDisplay.textContent = '00:00.00';
-
-      // Bind digits (5 numbers)
-      if (currentPracticeGame.digits) {
-        numCards.forEach((card, idx) => {
-          if (currentPracticeGame.digits[idx] !== undefined) {
-            card.textContent = currentPracticeGame.digits[idx];
-          }
-        });
-      }
-
-      resetSlots();
-      boardContainer.classList.add('ready-state');
-      keypadContainer.classList.add('disabled');
-
-      overlayReadyDaily.style.display = 'none';
-      overlayCompletedDaily.style.display = 'none';
-      overlayReadyPractice.style.display = 'flex';
     }
 
     // 3-2-1 Countdown Routine
@@ -1759,28 +1668,8 @@
       }
     }
 
-    // Event Listeners for Start Buttons
+    // Event Listeners for Start Button
     btnStartGame.addEventListener('click', startCountdown);
-    btnStartPracticeGame.addEventListener('click', startCountdown);
-
-    btnGoPracticeFromReady.addEventListener('click', setupPracticeMode);
-    btnGoPracticeFromCompleted.addEventListener('click', setupPracticeMode);
-    btnGoPracticeFromResult.addEventListener('click', () => {
-      closeResultModal();
-      setupPracticeMode();
-    });
-
-    btnNextPractice.addEventListener('click', () => {
-      closeResultModal();
-      setupPracticeMode();
-      startCountdown();
-    });
-
-    btnReturnDaily.addEventListener('click', setupDailyMode);
-    btnReturnDailyFromResult.addEventListener('click', () => {
-      closeResultModal();
-      setupDailyMode();
-    });
 
     // Slots Click
     opSlots.forEach((slot) => {
@@ -1824,8 +1713,12 @@
       }
 
       if (gameState === 'READY' && (e.key === 'Enter' || e.key === ' ')) {
-        e.preventDefault();
-        startCountdown();
+        const todayStr = getTodayDateString();
+        const history = StorageService.getHistory();
+        if (!history[todayStr]) {
+          e.preventDefault();
+          startCountdown();
+        }
         return;
       }
 
@@ -1876,7 +1769,7 @@
       }
 
       // 2. Build left and right tokens
-      const digits = (gameMode === 'DAILY' ? currentDailyGame : currentPracticeGame).digits;
+      const digits = currentDailyGame.digits;
       const leftDigits = digits.slice(0, eqIndex + 1);
       const leftOps = slotValues.slice(0, eqIndex);
 
@@ -1921,25 +1814,14 @@
 
       launchConfetti();
 
-      if (gameMode === 'DAILY') {
-        const todayStr = getTodayDateString();
-        const streak = StorageService.recordDailySuccess(todayStr, finalTimeStr, finalEquationStr, elapsedMs, totalAttempts);
-        refreshStreakUI();
+      const todayStr = getTodayDateString();
+      const streak = StorageService.recordDailySuccess(todayStr, finalTimeStr, finalEquationStr, elapsedMs, totalAttempts);
+      refreshStreakUI();
 
-        resultModalTitle.textContent = 'SOLVED!';
-        resultBadge.textContent = '🎉';
-        resultStreakText.style.display = 'block';
-        resultStreakText.textContent = `🔥 Streak: ${streak}`;
-        dailyActionsRow.style.display = 'flex';
-        practiceActionsRow.style.display = 'none';
-      } else {
-        // Practice Mode Clear
-        resultModalTitle.textContent = 'PRACTICE SOLVED!';
-        resultBadge.textContent = '🎯';
-        resultStreakText.style.display = 'none';
-        dailyActionsRow.style.display = 'none';
-        practiceActionsRow.style.display = 'flex';
-      }
+      resultModalTitle.textContent = 'SOLVED!';
+      resultBadge.textContent = '🎉';
+      resultStreakText.style.display = 'block';
+      resultStreakText.textContent = `🔥 Streak: ${streak}`;
 
       resultTimeDisplay.textContent = finalTimeStr;
       resultEquationDisplay.textContent = finalEquationStr;
@@ -1960,9 +1842,7 @@
 
     function closeResultModal() {
       resultModal.classList.remove('open');
-      if (gameMode === 'DAILY') {
-        setupDailyMode();
-      }
+      setupDailyMode();
     }
 
     btnHelp.addEventListener('click', openModal);
