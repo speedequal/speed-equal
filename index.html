@@ -1234,12 +1234,12 @@
       <div class="modal-content">
         <div class="rule-step">
           <span class="rule-number">1</span>
-          <span>Fill the <strong>4 empty slots</strong> with math operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>=</code>) between the 5 given numbers.</span>
+          <span>Fill all <strong>4 empty slots</strong> with math operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>=</code>) between the 5 given numbers.</span>
         </div>
 
         <div class="rule-step">
           <span class="rule-number">2</span>
-          <span>Standard operator precedence applies (<code>*</code> before <code>+</code>/<code>-</code>). You can leave slots empty to concatenate numbers.</span>
+          <span>Standard operator precedence applies (<code>*</code> before <code>+</code>/<code>-</code>). All slots must be filled!</span>
         </div>
 
         <div class="example-box">
@@ -1438,29 +1438,19 @@
     }
 
     function buildSideTokens(digits, operators) {
+      if (!digits || !operators || digits.length !== operators.length + 1) return null;
       const tokens = [];
-      let currentNumStr = String(digits[0]);
-
       for (let i = 0; i < operators.length; i++) {
-        const op = operators[i];
-        const nextDigit = digits[i + 1];
-
-        if (op === '') {
-          if (currentNumStr === '0') return null;
-          currentNumStr += String(nextDigit);
-        } else {
-          tokens.push(parseInt(currentNumStr, 10));
-          tokens.push(op);
-          currentNumStr = String(nextDigit);
-        }
+        tokens.push(digits[i]);
+        tokens.push(operators[i]);
       }
-      tokens.push(parseInt(currentNumStr, 10));
+      tokens.push(digits[digits.length - 1]);
       return tokens;
     }
 
-    // 4. Brute-Force Solver: Checks all 5^4 = 625 operator combinations for 5 digits
+    // 4. Brute-Force Solver: Checks all 4^4 = 256 operator combinations (+, -, *, =)
     function solve5Digits(digits) {
-      const ops = ['+', '-', '*', '=', ''];
+      const ops = ['+', '-', '*', '='];
       const solutions = [];
 
       for (let o0 of ops) {
@@ -1494,7 +1484,7 @@
               const rightVal = evaluateSide(rightTokens);
 
               if (leftVal !== null && rightVal !== null && leftVal === rightVal) {
-                const equationStr = `${digits[0]}${o0}${digits[1]}${o1}${digits[2]}${o2}${digits[3]}${o3}${digits[4]}`;
+                const equationStr = `${digits[0]} ${o0} ${digits[1]} ${o1} ${digits[2]} ${o2} ${digits[3]} ${o3} ${digits[4]}`;
                 solutions.push({
                   ops: currentOps,
                   equation: equationStr,
@@ -1919,7 +1909,7 @@
       }
     }
 
-    // Clear Slot
+    // Clear Slot (Deletes current slot value)
     function clearCurrentSlot() {
       if (gameState !== 'PLAYING') return;
       if (slotValues[selectedSlotIndex] !== '') {
@@ -2013,6 +2003,15 @@
     // Submission & Equation Verification Handler (5 Digits & 4 Slots)
     function handleSubmit() {
       if (gameState !== 'PLAYING') return;
+
+      // 0. Verify all 4 slots are filled
+      for (let i = 0; i < TOTAL_SLOTS; i++) {
+        if (!slotValues[i] || slotValues[i].trim() === '') {
+          wrongAttempts++;
+          triggerBoardShake('Please fill all operator slots!');
+          return;
+        }
+      }
 
       // 1. Check '=' count
       let eqCount = 0;
