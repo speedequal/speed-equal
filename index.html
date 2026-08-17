@@ -518,6 +518,178 @@
       }
     }
 
+    /* Board Shake Animation */
+    @keyframes shakeBoard {
+      0%, 100% { transform: translateX(0); }
+      15%, 45%, 75% { transform: translateX(-6px); }
+      30%, 60%, 90% { transform: translateX(6px); }
+    }
+
+    .board-container.shake {
+      animation: shakeBoard 0.4s ease;
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.35) !important;
+    }
+
+    /* Floating Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 84px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid #ef4444;
+      color: #fecaca;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(239, 68, 68, 0.3);
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 350;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      backdrop-filter: blur(8px);
+    }
+
+    .toast-container.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast-container.success {
+      border-color: #10b981;
+      color: #a7f3d0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Confetti Canvas */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 180;
+    }
+
+    /* Result Modal Specifics */
+    .result-badge {
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 4px;
+      animation: bounceBadge 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes bounceBadge {
+      0% { transform: scale(0.3); opacity: 0; }
+      70% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .result-time-box {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 8px 0;
+    }
+
+    .result-time-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .result-time-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #10b981;
+      text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .result-equation-box {
+      background: var(--bg-main);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 12px 16px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .result-equation-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 0.05em;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn-action-primary {
+      flex: 2;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border: 1px solid #34d399;
+      color: #ffffff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      transition: all 0.15s ease;
+    }
+
+    .btn-action-primary:hover {
+      background: linear-gradient(135deg, #34d399, #10b981);
+      transform: translateY(-1px);
+    }
+
+    .btn-action-primary:active {
+      transform: translateY(1px);
+    }
+
+    .btn-action-secondary {
+      flex: 1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-action-secondary:hover {
+      background: var(--bg-surface-hover);
+    }
+
     /* Modal */
     .modal-overlay {
       position: fixed;
@@ -528,7 +700,7 @@
       align-items: center;
       justify-content: center;
       padding: 16px;
-      z-index: 100;
+      z-index: 300;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease;
@@ -722,6 +894,12 @@
     <div class="countdown-number" id="countdownNumber">3</div>
   </div>
 
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Toast Notification -->
+  <div class="toast-container" id="toastContainer" role="alert" aria-live="polite"></div>
+
   <!-- Help Modal -->
   <div class="modal-overlay" id="helpModal" role="dialog" aria-modal="true">
     <div class="modal-card">
@@ -740,6 +918,39 @@
         <p><strong>⏱ 타임어택:</strong> 시작과 동시에 스톱워치가 동작합니다. 가능한 한 가장 빠른 시간 안에 등식을 완성하고 <strong>[제출(GO)]</strong> 버튼을 누르세요.
         </p>
         <p><strong>💡 팁:</strong> 하단 키패드의 <code>◀</code>, <code>▶</code> 버튼 또는 슬롯을 직접 탭하여 입력할 위치를 바꿀 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result (Success) Modal -->
+  <div class="modal-overlay" id="resultModal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="result-badge">🎉</div>
+      <div class="modal-header" style="justify-content: center; margin-bottom: 8px;">
+        <h2 class="modal-title" style="font-size: 1.6rem; color: #10b981;">CLEAR!</h2>
+      </div>
+      <div class="modal-content">
+        <!-- Clear Time Display -->
+        <div class="result-time-box">
+          <span class="result-time-label">클리어 타임</span>
+          <span class="result-time-value" id="resultTimeDisplay">00:00.00</span>
+        </div>
+
+        <!-- Cleared Equation -->
+        <div class="result-equation-box">
+          <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">완성한 수식</span>
+          <span class="result-equation-value" id="resultEquationDisplay">2 + 3 = 5</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="result-actions">
+          <button class="btn-action-primary" id="btnCopyResult">
+            <span>📋</span> 결과 복사하기
+          </button>
+          <button class="btn-action-secondary" id="btnCloseResult">
+            닫기
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -925,7 +1136,80 @@
       };
     }
 
-    // --- Step 3: Game State & Precision Stopwatch Engine ---
+    // --- Pure HTML5 Canvas Confetti System ---
+    const confettiCanvas = document.getElementById('confettiCanvas');
+    const ctx = confettiCanvas.getContext('2d');
+    let confettiParticles = [];
+    let confettiAnimFrame = null;
+
+    function resizeCanvas() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function launchConfetti() {
+      resizeCanvas();
+      confettiParticles = [];
+      const colors = ['#38bdf8', '#10b981', '#fbbf24', '#f43f5e', '#a855f7', '#34d399', '#f97316'];
+      const count = 140;
+
+      for (let i = 0; i < count; i++) {
+        confettiParticles.push({
+          x: confettiCanvas.width / 2 + (Math.random() - 0.5) * 80,
+          y: confettiCanvas.height * 0.45 + (Math.random() - 0.5) * 50,
+          vx: (Math.random() - 0.5) * 18,
+          vy: Math.random() * -14 - 4,
+          size: Math.random() * 8 + 6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          rotationSpeed: (Math.random() - 0.5) * 12,
+          gravity: 0.38,
+          drag: 0.965,
+          opacity: 1
+        });
+      }
+
+      if (confettiAnimFrame) cancelAnimationFrame(confettiAnimFrame);
+      renderConfetti();
+    }
+
+    function renderConfetti() {
+      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      let activeCount = 0;
+
+      for (let p of confettiParticles) {
+        p.vx *= p.drag;
+        p.vy = (p.vy + p.gravity) * p.drag;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rotation += p.rotationSpeed;
+
+        if (p.y > confettiCanvas.height * 0.5) {
+          p.opacity -= 0.008;
+        }
+
+        if (p.opacity > 0 && p.y < confettiCanvas.height + 20) {
+          activeCount++;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.globalAlpha = Math.max(0, p.opacity);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+          ctx.restore();
+        }
+      }
+
+      if (activeCount > 0) {
+        confettiAnimFrame = requestAnimationFrame(renderConfetti);
+      } else {
+        ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      }
+    }
+
+    // --- Step 3 & 4: Game State, Precision Stopwatch & Verification ---
     let gameState = 'READY'; // 'READY' | 'COUNTDOWN' | 'PLAYING' | 'FINISHED'
     const TOTAL_SLOTS = 5;
     let selectedSlotIndex = 0;
@@ -934,6 +1218,7 @@
     let timerStartTime = 0;
     let timerAnimFrame = null;
     let elapsedMs = 0;
+    let toastTimeout = null;
 
     // DOM Elements
     const boardContainer = document.getElementById('boardContainer');
@@ -948,6 +1233,51 @@
     const btnHelp = document.getElementById('btnHelp');
     const btnCloseModal = document.getElementById('btnCloseModal');
     const stopwatchDisplay = document.getElementById('stopwatchDisplay');
+    const toastContainer = document.getElementById('toastContainer');
+    const resultModal = document.getElementById('resultModal');
+    const resultTimeDisplay = document.getElementById('resultTimeDisplay');
+    const resultEquationDisplay = document.getElementById('resultEquationDisplay');
+    const btnCopyResult = document.getElementById('btnCopyResult');
+    const btnCloseResult = document.getElementById('btnCloseResult');
+    const streakCountElem = document.getElementById('streakCount');
+
+    // Load initial streak from localStorage
+    function getStreak() {
+      const saved = localStorage.getItem('speedequal_streak');
+      return saved ? parseInt(saved, 10) : 0;
+    }
+    streakCountElem.textContent = getStreak();
+
+    function incrementStreak() {
+      const current = getStreak();
+      const next = current + 1;
+      localStorage.setItem('speedequal_streak', next);
+      streakCountElem.textContent = next;
+    }
+
+    // Toast Function
+    function showToast(message, isSuccess = false) {
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastContainer.textContent = message;
+      toastContainer.className = 'toast-container show' + (isSuccess ? ' success' : '');
+      toastTimeout = setTimeout(() => {
+        toastContainer.classList.remove('show');
+      }, 2200);
+    }
+
+    // Trigger Shake Effect
+    function triggerBoardShake(message) {
+      boardContainer.classList.remove('shake');
+      void boardContainer.offsetWidth; // Trigger reflow
+      boardContainer.classList.add('shake');
+      setTimeout(() => {
+        boardContainer.classList.remove('shake');
+      }, 450);
+
+      if (message) {
+        showToast(message, false);
+      }
+    }
 
     // Initialize Game Board with Daily Digits
     const dailyGame = generateDailyGame();
@@ -1108,8 +1438,11 @@
 
     // Keyboard support
     window.addEventListener('keydown', (e) => {
-      if (helpModal.classList.contains('open')) {
-        if (e.key === 'Escape') closeModal();
+      if (helpModal.classList.contains('open') || resultModal.classList.contains('open')) {
+        if (e.key === 'Escape') {
+          closeModal();
+          closeResultModal();
+        }
         return;
       }
 
@@ -1139,22 +1472,81 @@
       }
     });
 
-    // Submit handler (Mock for step 3)
+    // Step 4: Submission & Equation Verification Handler
     function handleSubmit() {
       if (gameState !== 'PLAYING') return;
-      const isComplete = slotValues.every(val => val !== '');
-      if (!isComplete) {
-        opSlots.forEach((slot, idx) => {
-          if (slotValues[idx] === '') {
-            slot.style.borderColor = '#ef4444';
-            setTimeout(() => {
-              slot.style.borderColor = '';
-            }, 600);
-          }
-        });
+
+      // 1. Check '=' count
+      let eqCount = 0;
+      let eqIndex = -1;
+      for (let i = 0; i < TOTAL_SLOTS; i++) {
+        if (slotValues[i] === '=') {
+          eqCount++;
+          eqIndex = i;
+        }
+      }
+
+      if (eqCount === 0) {
+        triggerBoardShake('등호(=)가 1개 필요합니다!');
         return;
       }
-      alert(`[결과] 입력된 수식: ${dailyGame.digits.map((d, i) => d + (slotValues[i] || '')).join('')}\n걸린 시간: ${stopwatchDisplay.textContent}`);
+
+      if (eqCount > 1) {
+        triggerBoardShake('등호(=)는 정확히 1개만 들어갈 수 있습니다!');
+        return;
+      }
+
+      // 2. Build left and right tokens
+      const digits = dailyGame.digits;
+      const leftDigits = digits.slice(0, eqIndex + 1);
+      const leftOps = slotValues.slice(0, eqIndex);
+
+      const rightDigits = digits.slice(eqIndex + 1);
+      const rightOps = slotValues.slice(eqIndex + 1);
+
+      const leftTokens = buildSideTokens(leftDigits, leftOps);
+      const rightTokens = buildSideTokens(rightDigits, rightOps);
+
+      if (!leftTokens || !rightTokens) {
+        triggerBoardShake('유효하지 않은 수식 문법입니다!');
+        return;
+      }
+
+      // 3. Evaluate both sides
+      const leftVal = evaluateSide(leftTokens);
+      const rightVal = evaluateSide(rightTokens);
+
+      if (leftVal === null || rightVal === null) {
+        triggerBoardShake('수식을 계산할 수 없습니다!');
+        return;
+      }
+
+      // 4. Compare results
+      if (leftVal !== rightVal) {
+        triggerBoardShake(`좌변(${leftVal})과 우변(${rightVal})의 계산 결과가 일치하지 않습니다!`);
+        return;
+      }
+
+      // --- Correct Solution! ---
+      gameState = 'FINISHED';
+      cancelAnimationFrame(timerAnimFrame);
+
+      const finalTimeStr = stopwatchDisplay.textContent;
+      const finalEquationStr = digits.map((d, i) => d + (slotValues[i] !== undefined ? ` ${slotValues[i]} ` : '')).join('').replace(/\s+/g, ' ').trim();
+
+      // Fire confetti
+      launchConfetti();
+
+      // Update streak
+      incrementStreak();
+
+      // Show Result Modal after small delay
+      resultTimeDisplay.textContent = finalTimeStr;
+      resultEquationDisplay.textContent = finalEquationStr;
+
+      setTimeout(() => {
+        resultModal.classList.add('open');
+      }, 500);
     }
 
     // Modal Control
@@ -1166,10 +1558,30 @@
       helpModal.classList.remove('open');
     }
 
+    function closeResultModal() {
+      resultModal.classList.remove('open');
+    }
+
     btnHelp.addEventListener('click', openModal);
     btnCloseModal.addEventListener('click', closeModal);
+    btnCloseResult.addEventListener('click', closeResultModal);
+
     helpModal.addEventListener('click', (e) => {
       if (e.target === helpModal) closeModal();
+    });
+
+    resultModal.addEventListener('click', (e) => {
+      if (e.target === resultModal) closeResultModal();
+    });
+
+    // Copy Result Action
+    btnCopyResult.addEventListener('click', () => {
+      const shareText = `⚡ SpeedEqual (${dailyGame.date})\n⏱ 클리어 타임: ${resultTimeDisplay.textContent}\n🧩 수식: ${resultEquationDisplay.textContent}\n🔥 스트릭: ${getStreak()}일 연속\nhttps://speedequal.com`;
+      navigator.clipboard.writeText(shareText).then(() => {
+        showToast('클립보드에 결과가 복사되었습니다! 📋', true);
+      }).catch(() => {
+        showToast('복사에 실패했습니다.', false);
+      });
     });
   </script>
 </body>
