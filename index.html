@@ -175,7 +175,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 18px;
+      gap: 16px;
       width: 100%;
       padding: 4px 0;
     }
@@ -297,34 +297,130 @@
       border: 1px solid var(--border-subtle);
     }
 
-    .completed-message-box {
+    /* Completed Home View (Dedicated Single Card) */
+    .completed-home-view {
+      width: 100%;
+      max-width: 440px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      max-width: 320px;
+      justify-content: center;
+      margin: auto 0;
+      padding: 8px 4px;
     }
 
-    .completed-title {
-      font-size: 1.15rem;
+    .completed-card {
+      background: #ffffff;
+      border: 1px solid var(--border-strong);
+      border-radius: 18px;
+      padding: 22px 18px;
+      width: 100%;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+    }
+
+    .completed-card-badge {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+      font-size: 0.72rem;
       font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .completed-card-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .completed-card-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: -6px;
+    }
+
+    .completed-stats-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 4px 0;
+    }
+
+    .completed-stat-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .completed-stat-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .completed-stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 1.15rem;
       color: var(--accent-green);
     }
 
-    .completed-desc {
-      font-size: 0.85rem;
-      color: var(--text-muted);
+    .completed-stat-formula {
       font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-main);
     }
 
-    .completed-notice {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      line-height: 1.4;
+    .completed-stat-streak {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--accent-amber);
     }
 
-    /* Countdown Widget */
-    .next-puzzle-box {
+    .btn-share-home {
+      width: 100%;
+      background: var(--accent-green);
+      color: #ffffff;
+      border: 1px solid var(--accent-green);
+      padding: 13px;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+      transition: all 0.12s ease;
+    }
+
+    .btn-share-home:hover {
+      background: var(--accent-green-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-share-home:active {
+      transform: scale(0.98);
+    }
+
+    .home-next-puzzle-box {
       background: var(--bg-subtle);
       border: 1px solid var(--border-strong);
       border-radius: 10px;
@@ -333,10 +429,11 @@
       flex-direction: column;
       align-items: center;
       gap: 2px;
-      margin-top: 4px;
+      width: 100%;
+      margin-top: 2px;
     }
 
-    .next-puzzle-label {
+    .home-next-puzzle-label {
       font-size: 0.68rem;
       font-weight: 800;
       text-transform: uppercase;
@@ -344,7 +441,7 @@
       color: var(--text-subtle);
     }
 
-    .next-puzzle-timer {
+    .home-next-puzzle-timer {
       font-family: 'JetBrains Mono', monospace;
       font-variant-numeric: tabular-nums;
       font-size: 1.25rem;
@@ -945,39 +1042,21 @@
 
     <!-- 2. Main Game Area -->
     <main class="game-area">
-      <!-- Stopwatch Display -->
-      <div class="stopwatch-wrapper">
+      <!-- Active Game View Component 1: Stopwatch Display -->
+      <div class="stopwatch-wrapper" id="stopwatchWrapper">
         <span class="stopwatch-label">Daily Challenge</span>
         <div class="stopwatch-display" id="stopwatchDisplay">00:00.00</div>
       </div>
 
-      <!-- Equation Board (5 Numbers + 4 Operator Slots = 9 Blocks in 1 Fixed Line) -->
+      <!-- Active Game View Component 2: Equation Board (5 Numbers + 4 Operator Slots) -->
       <div class="board-container ready-state" id="boardContainer">
         <!-- Start Challenge Overlay -->
         <div class="board-start-overlay" id="boardStartOverlay">
-          <!-- State 1: Ready to Start Daily -->
-          <div id="overlayReadyDaily" class="overlay-daily-header">
+          <div class="overlay-daily-header">
             <span class="overlay-challenge-badge">Daily Challenge</span>
             <div style="height: 6px;"></div>
             <button class="btn-start-game" id="btnStartGame">
               <span>⚡</span> START (SPACE)
-            </button>
-          </div>
-
-          <!-- State 2: Daily Already Completed -->
-          <div id="overlayCompletedDaily" class="completed-message-box" style="display: none;">
-            <span class="completed-title">TODAY'S CHALLENGE COMPLETED! 🔥</span>
-            <span class="completed-desc" id="completedDescText">Your Time: 00:00.00</span>
-            <p class="completed-notice">You've completed today's challenge. Come back tomorrow!</p>
-
-            <div class="next-puzzle-box">
-              <span class="next-puzzle-label">Next Puzzle In</span>
-              <span class="next-puzzle-timer countdown-timer-text">--:--:--</span>
-            </div>
-
-            <button class="btn-action-primary" id="btnOverlayCopyResult"
-              style="margin-top: 6px; padding: 10px 20px; font-size: 0.92rem; width: auto;">
-              <span>📋</span> Share Result
             </button>
           </div>
         </div>
@@ -1004,9 +1083,42 @@
           <div class="num-card" data-num-idx="4">8</div>
         </div>
       </div>
+
+      <!-- Dedicated Completed Home View (Shown ONLY when today's puzzle is already completed) -->
+      <div class="completed-home-view" id="completedHomeView" style="display: none;">
+        <div class="completed-card">
+          <div class="completed-card-badge">🔥 Challenge Completed</div>
+          <h2 class="completed-card-title">You Solved Today's Puzzle!</h2>
+          <p class="completed-card-subtitle">Come back at midnight for a new challenge</p>
+
+          <div class="completed-stats-container">
+            <div class="completed-stat-box">
+              <span class="completed-stat-label">⏱️ Time</span>
+              <span class="completed-stat-value" id="homeCompletedTime">00:00.00</span>
+            </div>
+            <div class="completed-stat-box">
+              <span class="completed-stat-label">🧩 Equation</span>
+              <span class="completed-stat-formula" id="homeCompletedFormula">2 * 3 - 5 + 3 = 4</span>
+            </div>
+            <div class="completed-stat-box">
+              <span class="completed-stat-label">🔥 Streak</span>
+              <span class="completed-stat-streak" id="homeCompletedStreak">1 Day</span>
+            </div>
+          </div>
+
+          <button class="btn-share-home" id="btnHomeShare">
+            <span>📋</span> SHARE RESULT
+          </button>
+
+          <div class="home-next-puzzle-box">
+            <span class="home-next-puzzle-label">Next Puzzle In</span>
+            <span class="home-next-puzzle-timer countdown-timer-text">--:--:--</span>
+          </div>
+        </div>
+      </div>
     </main>
 
-    <!-- 3. Bottom Keypad -->
+    <!-- 3. Bottom Keypad (Hidden when completed) -->
     <footer class="keypad-container disabled" id="keypadContainer">
       <!-- Operator Row -->
       <div class="keypad-row">
@@ -1091,9 +1203,9 @@
         <div class="result-streak-text" id="resultStreakText">🔥 1 Day Streak</div>
 
         <!-- Next Puzzle Countdown in Modal -->
-        <div class="next-puzzle-box" style="margin: 4px 0 6px;">
-          <span class="next-puzzle-label">Next Puzzle In</span>
-          <span class="next-puzzle-timer countdown-timer-text">--:--:--</span>
+        <div class="home-next-puzzle-box" style="margin: 4px 0 6px;">
+          <span class="home-next-puzzle-label">Next Puzzle In</span>
+          <span class="home-next-puzzle-timer countdown-timer-text">--:--:--</span>
         </div>
 
         <!-- Action Buttons -->
@@ -1452,13 +1564,15 @@
     let toastTimeout = null;
 
     // DOM Elements
+    const stopwatchWrapper = document.getElementById('stopwatchWrapper');
     const boardContainer = document.getElementById('boardContainer');
     const boardStartOverlay = document.getElementById('boardStartOverlay');
-    const overlayReadyDaily = document.getElementById('overlayReadyDaily');
-    const overlayCompletedDaily = document.getElementById('overlayCompletedDaily');
-    const completedDescText = document.getElementById('completedDescText');
+    const completedHomeView = document.getElementById('completedHomeView');
+    const homeCompletedTime = document.getElementById('homeCompletedTime');
+    const homeCompletedFormula = document.getElementById('homeCompletedFormula');
+    const homeCompletedStreak = document.getElementById('homeCompletedStreak');
+    const btnHomeShare = document.getElementById('btnHomeShare');
     const btnStartGame = document.getElementById('btnStartGame');
-    const btnOverlayCopyResult = document.getElementById('btnOverlayCopyResult');
     const keypadContainer = document.getElementById('keypadContainer');
     const countdownOverlay = document.getElementById('countdownOverlay');
     const countdownNumber = document.getElementById('countdownNumber');
@@ -1537,7 +1651,7 @@
       selectedSlotIndex = 0;
     }
 
-    // Setup Daily Mode Board
+    // Setup Daily Mode Board & Render Home View
     function setupDailyMode() {
       gameState = 'READY';
       wrongAttempts = 0;
@@ -1557,8 +1671,6 @@
       }
 
       resetSlots();
-      boardContainer.classList.add('ready-state');
-      keypadContainer.classList.add('disabled');
 
       // Check if today already completed
       const todayStr = getTodayDateString();
@@ -1566,13 +1678,24 @@
       const todayRecord = history[todayStr];
 
       if (todayRecord) {
-        overlayReadyDaily.style.display = 'none';
-        overlayCompletedDaily.style.display = 'flex';
-        completedDescText.textContent = `Your Time: ${todayRecord.timeStr} (${todayRecord.equation})`;
-        stopwatchDisplay.textContent = todayRecord.timeStr;
+        // Render Dedicated Completed Home View
+        stopwatchWrapper.style.display = 'none';
+        boardContainer.style.display = 'none';
+        keypadContainer.style.display = 'none';
+        completedHomeView.style.display = 'flex';
+
+        homeCompletedTime.textContent = todayRecord.timeStr;
+        homeCompletedFormula.textContent = todayRecord.equation;
+        homeCompletedStreak.textContent = `${StorageService.getStreak()} ${StorageService.getStreak() === 1 ? 'Day' : 'Days'}`;
       } else {
-        overlayReadyDaily.style.display = 'flex';
-        overlayCompletedDaily.style.display = 'none';
+        // Render Active Challenge Board View
+        stopwatchWrapper.style.display = 'flex';
+        boardContainer.style.display = 'flex';
+        keypadContainer.style.display = 'flex';
+        completedHomeView.style.display = 'none';
+
+        boardContainer.classList.add('ready-state');
+        keypadContainer.classList.add('disabled');
       }
     }
 
@@ -1922,7 +2045,7 @@ https://speed-equal.vercel.app`;
       copyShareResult(resultTimeDisplay.textContent, elapsedMs, StorageService.getStreak(), lastTotalAttempts);
     });
 
-    btnOverlayCopyResult.addEventListener('click', () => {
+    btnHomeShare.addEventListener('click', () => {
       const todayStr = getTodayDateString();
       const history = StorageService.getHistory();
       const rec = history[todayStr];
