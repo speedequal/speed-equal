@@ -4,26 +4,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SpeedEqual - Daily 6-Digit Speed Math Puzzle</title>
+  <title>SpeedEqual - Daily 5-Digit Speed Math Puzzle</title>
   <meta name="description"
-    content="A daily speed math puzzle. Fill operators between 6 numbers to make a valid equation before time runs out!">
+    content="A daily speed math puzzle. Fill operators between 5 numbers to make a valid equation before time runs out!">
   <meta name="keywords" content="SpeedEqual, math puzzle, Wordle, Nerdle, Connections, speed math, daily game">
   <meta name="author" content="SpeedEqual">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://speed-equal.vercel.app">
-  <meta property="og:title" content="SpeedEqual - Daily 6-Digit Speed Math Puzzle">
+  <meta property="og:title" content="SpeedEqual - Daily 5-Digit Speed Math Puzzle">
   <meta property="og:description"
-    content="Beat the clock! Place operators between 6 numbers to balance the equation. What's your best time?">
+    content="Beat the clock! Place operators between 5 numbers to balance the equation. What's your best time?">
   <meta property="og:image" content="https://speed-equal.vercel.app/og-image.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://speed-equal.vercel.app">
-  <meta property="twitter:title" content="SpeedEqual - Daily 6-Digit Speed Math Puzzle">
+  <meta property="twitter:title" content="SpeedEqual - Daily 5-Digit Speed Math Puzzle">
   <meta property="twitter:description"
-    content="Beat the clock! Place operators between 6 numbers to balance the equation. What's your best time?">
+    content="Beat the clock! Place operators between 5 numbers to balance the equation. What's your best time?">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -92,7 +92,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 12px 16px 16px;
+      padding: 12px 14px 16px;
       background-color: var(--bg-app);
       box-shadow: 0 0 40px rgba(0, 0, 0, 0.03);
     }
@@ -194,7 +194,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 18px;
       width: 100%;
       padding: 4px 0;
     }
@@ -243,7 +243,7 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-strong);
       border-radius: 16px;
-      padding: 20px 10px;
+      padding: 20px 8px;
       box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
@@ -257,17 +257,21 @@
       font-size: 0.8rem;
       color: var(--text-muted);
       font-weight: 500;
+      text-align: center;
     }
 
+    /* 1-Line Fixed Equation Row (9 items: 5 numbers + 4 slots) */
     .equation-row {
       display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
       align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
-      gap: 5px;
+      gap: clamp(3px, 1.2vw, 6px);
       width: 100%;
-      max-width: 480px;
+      max-width: 100%;
       transition: filter 0.25s ease, opacity 0.25s ease;
+      overflow-x: visible;
     }
 
     /* Ready / Blurred State */
@@ -368,11 +372,11 @@
       border-color: var(--text-muted);
     }
 
-    /* Number Card */
+    /* Number Card (5 numbers) - Compact Responsive */
     .num-card {
-      min-width: 36px;
-      height: 52px;
-      padding: 0 8px;
+      flex: 1 1 0;
+      max-width: 48px;
+      height: clamp(44px, 12vw, 54px);
       background: var(--bg-surface);
       border: 2px solid var(--border-strong);
       border-radius: 8px;
@@ -381,16 +385,17 @@
       justify-content: center;
       font-family: 'JetBrains Mono', monospace;
       font-variant-numeric: tabular-nums;
-      font-size: 1.45rem;
+      font-size: clamp(1.2rem, 4.5vw, 1.55rem);
       font-weight: 800;
       color: var(--text-main);
       box-shadow: var(--shadow-sm);
     }
 
-    /* Operator Slot */
+    /* Operator Slot (4 slots) - Compact Responsive */
     .op-slot {
-      width: 42px;
-      height: 52px;
+      flex: 1 1 0;
+      max-width: 48px;
+      height: clamp(44px, 12vw, 54px);
       background: #f1f5f9;
       border: 2px dashed #94a3b8;
       border-radius: 8px;
@@ -398,7 +403,7 @@
       align-items: center;
       justify-content: center;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1.5rem;
+      font-size: clamp(1.2rem, 4.5vw, 1.55rem);
       font-weight: 800;
       color: var(--text-main);
       cursor: pointer;
@@ -788,6 +793,7 @@
     }
 
     .btn-action-purple {
+      flex: 1;
       background: var(--accent-purple);
       border: 1px solid var(--accent-purple);
       color: #ffffff;
@@ -927,19 +933,6 @@
         padding: 4px 16px;
       }
 
-      .num-card {
-        min-width: 30px;
-        height: 46px;
-        font-size: 1.25rem;
-        padding: 0 5px;
-      }
-
-      .op-slot {
-        width: 36px;
-        height: 46px;
-        font-size: 1.3rem;
-      }
-
       .key-btn {
         height: 48px;
         font-size: 1.2rem;
@@ -978,7 +971,7 @@
         <div class="stopwatch-display" id="stopwatchDisplay">00:00.00</div>
       </div>
 
-      <!-- Equation Board (6 Numbers + 5 Operator Slots) -->
+      <!-- Equation Board (5 Numbers + 4 Operator Slots = 9 Blocks in 1 Fixed Line) -->
       <div class="board-container ready-state" id="boardContainer">
         <!-- Start Challenge Overlay -->
         <div class="board-start-overlay" id="boardStartOverlay">
@@ -1036,10 +1029,6 @@
           <div class="op-slot" data-slot-idx="3" tabindex="0" aria-label="Slot 4"></div>
           <!-- Item 8: Num5 -->
           <div class="num-card" data-num-idx="4">8</div>
-          <!-- Item 9: Op5 (slot-4) -->
-          <div class="op-slot" data-slot-idx="4" tabindex="0" aria-label="Slot 5"></div>
-          <!-- Item 10: Num6 -->
-          <div class="num-card" data-num-idx="5">12</div>
         </div>
       </div>
     </main>
@@ -1085,7 +1074,7 @@
       <div class="modal-content">
         <div class="rule-step">
           <span class="rule-number">1</span>
-          <span>Fill the <strong>5 empty slots</strong> with math operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>=</code>) between the 6 given numbers.</span>
+          <span>Fill the <strong>4 empty slots</strong> with math operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>=</code>) between the 5 given numbers.</span>
         </div>
 
         <div class="rule-step">
@@ -1157,7 +1146,7 @@
   </div>
 
   <script>
-    // --- Step 2 & 5: PRNG, Storage & Solvers ---
+    // --- Step 2 & 5: PRNG, Storage & 5-Digit Solver ---
 
     // 1. Date formatting & Seed conversion
     function getTodayDateString() {
@@ -1254,8 +1243,8 @@
       return tokens;
     }
 
-    // 4. Brute-Force Solver: Checks all 5^5 = 3125 operator combinations
-    function solve6Digits(digits) {
+    // 4. Brute-Force Solver: Checks all 5^4 = 625 operator combinations for 5 digits
+    function solve5Digits(digits) {
       const ops = ['+', '-', '*', '=', ''];
       const solutions = [];
 
@@ -1263,41 +1252,39 @@
         for (let o1 of ops) {
           for (let o2 of ops) {
             for (let o3 of ops) {
-              for (let o4 of ops) {
-                const currentOps = [o0, o1, o2, o3, o4];
+              const currentOps = [o0, o1, o2, o3];
 
-                let eqCount = 0;
-                let eqIndex = -1;
-                for (let i = 0; i < 5; i++) {
-                  if (currentOps[i] === '=') {
-                    eqCount++;
-                    eqIndex = i;
-                  }
+              let eqCount = 0;
+              let eqIndex = -1;
+              for (let i = 0; i < 4; i++) {
+                if (currentOps[i] === '=') {
+                  eqCount++;
+                  eqIndex = i;
                 }
-                if (eqCount !== 1) continue;
+              }
+              if (eqCount !== 1) continue;
 
-                const leftDigits = digits.slice(0, eqIndex + 1);
-                const leftOps = currentOps.slice(0, eqIndex);
+              const leftDigits = digits.slice(0, eqIndex + 1);
+              const leftOps = currentOps.slice(0, eqIndex);
 
-                const rightDigits = digits.slice(eqIndex + 1);
-                const rightOps = currentOps.slice(eqIndex + 1);
+              const rightDigits = digits.slice(eqIndex + 1);
+              const rightOps = currentOps.slice(eqIndex + 1);
 
-                const leftTokens = buildSideTokens(leftDigits, leftOps);
-                const rightTokens = buildSideTokens(rightDigits, rightOps);
+              const leftTokens = buildSideTokens(leftDigits, leftOps);
+              const rightTokens = buildSideTokens(rightDigits, rightOps);
 
-                if (!leftTokens || !rightTokens) continue;
+              if (!leftTokens || !rightTokens) continue;
 
-                const leftVal = evaluateSide(leftTokens);
-                const rightVal = evaluateSide(rightTokens);
+              const leftVal = evaluateSide(leftTokens);
+              const rightVal = evaluateSide(rightTokens);
 
-                if (leftVal !== null && rightVal !== null && leftVal === rightVal) {
-                  const equationStr = `${digits[0]}${o0}${digits[1]}${o1}${digits[2]}${o2}${digits[3]}${o3}${digits[4]}${o4}${digits[5]}`;
-                  solutions.push({
-                    ops: currentOps,
-                    equation: equationStr,
-                    value: leftVal
-                  });
-                }
+              if (leftVal !== null && rightVal !== null && leftVal === rightVal) {
+                const equationStr = `${digits[0]}${o0}${digits[1]}${o1}${digits[2]}${o2}${digits[3]}${o3}${digits[4]}`;
+                solutions.push({
+                  ops: currentOps,
+                  equation: equationStr,
+                  value: leftVal
+                });
               }
             }
           }
@@ -1307,7 +1294,7 @@
       return solutions;
     }
 
-    // 5. Daily Game Generator
+    // 5. Daily Game Generator (5 Digits)
     function generateDailyGame() {
       const todayDateStr = getTodayDateString();
       let initialSeed = hashStringToSeed(todayDateStr);
@@ -1319,11 +1306,11 @@
       while (attempts < 500) {
         const rng = createMulberry32(currentSeed);
         const candidateDigits = [];
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 5; i++) {
           candidateDigits.push(Math.floor(rng() * 9) + 1); // 1~9
         }
 
-        const solutions = solve6Digits(candidateDigits);
+        const solutions = solve5Digits(candidateDigits);
         if (solutions.length > 0) {
           finalDigits = candidateDigits;
           finalSolutions = solutions;
@@ -1341,16 +1328,16 @@
       };
     }
 
-    // 6. Random Practice Game Generator
+    // 6. Random Practice Game Generator (5 Digits)
     function generatePracticeGame() {
       let attempts = 0;
       while (attempts < 500) {
         const candidateDigits = [];
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 5; i++) {
           candidateDigits.push(Math.floor(Math.random() * 9) + 1);
         }
 
-        const solutions = solve6Digits(candidateDigits);
+        const solutions = solve5Digits(candidateDigits);
         if (solutions.length > 0) {
           return {
             digits: candidateDigits,
@@ -1359,7 +1346,7 @@
         }
         attempts++;
       }
-      return { digits: [2, 3, 5, 3, 4, 4], solutions: [] };
+      return { digits: [3, 2, 5, 1, 1], solutions: [] };
     }
 
     // --- Pure HTML5 Canvas Confetti System ---
@@ -1484,9 +1471,9 @@
     };
 
     // --- State & DOM Initialization ---
+    const TOTAL_SLOTS = 4; // 4 slots for 5 digits
     let gameMode = 'DAILY'; // 'DAILY' | 'PRACTICE'
     let gameState = 'READY'; // 'READY' | 'COUNTDOWN' | 'PLAYING' | 'FINISHED'
-    const TOTAL_SLOTS = 5;
     let selectedSlotIndex = 0;
     let slotValues = Array(TOTAL_SLOTS).fill('');
 
@@ -1611,7 +1598,7 @@
       stopwatchDisplay.className = 'stopwatch-display';
       stopwatchDisplay.textContent = '00:00.00';
 
-      // Bind digits
+      // Bind digits (5 numbers)
       if (currentDailyGame.digits) {
         numCards.forEach((card, idx) => {
           if (currentDailyGame.digits[idx] !== undefined) {
@@ -1657,7 +1644,7 @@
       stopwatchDisplay.className = 'stopwatch-display practice';
       stopwatchDisplay.textContent = '00:00.00';
 
-      // Bind digits
+      // Bind digits (5 numbers)
       if (currentPracticeGame.digits) {
         numCards.forEach((card, idx) => {
           if (currentPracticeGame.digits[idx] !== undefined) {
@@ -1856,7 +1843,7 @@
       }
     });
 
-    // Submission & Equation Verification Handler
+    // Submission & Equation Verification Handler (5 Digits & 4 Slots)
     function handleSubmit() {
       if (gameState !== 'PLAYING') return;
 
@@ -1976,7 +1963,7 @@
       if (e.target === resultModal) closeResultModal();
     });
 
-    // Copy Result Formatter (Formatted as requested)
+    // Copy Result Formatter
     function copyShareResult(timeStr, streak) {
       const todayStr = getTodayDateString();
       let formattedTime = timeStr;
