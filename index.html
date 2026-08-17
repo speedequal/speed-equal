@@ -184,7 +184,7 @@
       text-align: center;
     }
 
-    /* Equation Board */
+    /* Board Container & Start Overlay */
     .board-container {
       width: 100%;
       background: var(--bg-card);
@@ -196,6 +196,8 @@
       flex-direction: column;
       align-items: center;
       gap: 12px;
+      position: relative;
+      overflow: hidden;
     }
 
     .board-hint {
@@ -212,6 +214,72 @@
       gap: 6px;
       width: 100%;
       max-width: 500px;
+      transition: filter 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* Ready / Blurred State */
+    .board-container.ready-state .equation-row {
+      filter: blur(10px);
+      opacity: 0.35;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .board-start-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(3px);
+      z-index: 10;
+      transition: all 0.3s ease;
+    }
+
+    .board-container:not(.ready-state) .board-start-overlay {
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    .btn-start-game {
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      color: #ffffff;
+      border: 1px solid #7dd3fc;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      padding: 12px 28px;
+      border-radius: 9999px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(56, 189, 248, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: pulseButton 2s infinite;
+    }
+
+    .btn-start-game:hover {
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 6px 24px rgba(56, 189, 248, 0.6);
+      background: linear-gradient(135deg, #7dd3fc, #0284c7);
+    }
+
+    .btn-start-game:active {
+      transform: translateY(1px) scale(0.97);
+    }
+
+    @keyframes pulseButton {
+      0%, 100% {
+        box-shadow: 0 4px 18px rgba(56, 189, 248, 0.4);
+      }
+      50% {
+        box-shadow: 0 6px 28px rgba(56, 189, 248, 0.7), 0 0 0 4px rgba(56, 189, 248, 0.2);
+      }
     }
 
     /* Number Card */
@@ -267,12 +335,19 @@
       transform: scale(0.95);
     }
 
+    /* Disabled Keypad state in READY/COUNTDOWN */
+    .keypad-container.disabled {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
     /* 3. Bottom Keypad */
     .keypad-container {
       display: flex;
       flex-direction: column;
       gap: 8px;
       width: 100%;
+      transition: opacity 0.25s ease;
     }
 
     .keypad-row {
@@ -356,6 +431,91 @@
     .key-submit:active {
       transform: translateY(2px);
       box-shadow: 0 1px 0 #047857;
+    }
+
+    /* Countdown Overlay */
+    .countdown-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 15, 23, 0.88);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .countdown-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .countdown-number {
+      font-family: 'JetBrains Mono', 'Outfit', sans-serif;
+      font-size: 6.5rem;
+      font-weight: 900;
+      text-align: center;
+      letter-spacing: -0.04em;
+      transform: scale(0.5);
+      opacity: 0;
+    }
+
+    .countdown-number.pop-3 {
+      color: #38bdf8;
+      text-shadow: 0 0 40px rgba(56, 189, 248, 0.7);
+      animation: countdownPop 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .countdown-number.pop-2 {
+      color: #fbbf24;
+      text-shadow: 0 0 40px rgba(251, 191, 36, 0.7);
+      animation: countdownPop 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .countdown-number.pop-1 {
+      color: #f97316;
+      text-shadow: 0 0 40px rgba(249, 115, 22, 0.7);
+      animation: countdownPop 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .countdown-number.pop-go {
+      color: #10b981;
+      font-size: 7.5rem;
+      text-shadow: 0 0 50px rgba(16, 185, 129, 0.9);
+      animation: countdownPopGo 0.42s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes countdownPop {
+      0% {
+        transform: scale(0.3);
+        opacity: 0;
+      }
+      60% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes countdownPopGo {
+      0% {
+        transform: scale(0.2);
+        opacity: 0;
+      }
+      60% {
+        transform: scale(1.3);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.05);
+        opacity: 1;
+      }
     }
 
     /* Modal */
@@ -501,13 +661,20 @@
       </div>
 
       <!-- Equation Board (6 Numbers + 5 Operator Slots) -->
-      <div class="board-container">
+      <div class="board-container ready-state" id="boardContainer">
+        <!-- Start Challenge Overlay -->
+        <div class="board-start-overlay" id="boardStartOverlay">
+          <button class="btn-start-game" id="btnStartGame">
+            <span>⚡</span> 오늘의 도전 START
+          </button>
+        </div>
+
         <span class="board-hint">연산자 슬롯을 선택하고 하단 키패드로 채워보세요</span>
         <div class="equation-row" id="equationRow">
           <!-- Item 0: Num1 -->
           <div class="num-card" data-num-idx="0">3</div>
           <!-- Item 1: Op1 (slot-0) -->
-          <div class="op-slot active" data-slot-idx="0" tabindex="0" aria-label="연산자 1번째 슬롯"></div>
+          <div class="op-slot" data-slot-idx="0" tabindex="0" aria-label="연산자 1번째 슬롯"></div>
           <!-- Item 2: Num2 -->
           <div class="num-card" data-num-idx="1">7</div>
           <!-- Item 3: Op2 (slot-1) -->
@@ -531,7 +698,7 @@
     </main>
 
     <!-- 3. Bottom Keypad -->
-    <footer class="keypad-container">
+    <footer class="keypad-container disabled" id="keypadContainer">
       <!-- Operator Row -->
       <div class="keypad-row">
         <button class="key-btn key-operator" data-action="insert" data-value="+">+</button>
@@ -548,6 +715,11 @@
         <button class="key-btn key-submit" data-action="submit" id="btnSubmit">제출 (GO)</button>
       </div>
     </footer>
+  </div>
+
+  <!-- Countdown Overlay (3-2-1-GO!) -->
+  <div class="countdown-overlay" id="countdownOverlay" aria-live="assertive">
+    <div class="countdown-number" id="countdownNumber">3</div>
   </div>
 
   <!-- Help Modal -->
@@ -642,7 +814,6 @@
 
     // Parse a sequence of digits and operators into tokens (handling '' as concatenation)
     function buildSideTokens(digits, operators) {
-      // digits: e.g. [3, 7], operators: e.g. [''] -> [37]
       const tokens = [];
       let currentNumStr = String(digits[0]);
 
@@ -651,7 +822,6 @@
         const nextDigit = digits[i + 1];
 
         if (op === '') {
-          // Disallow leading zeros in multi-digit numbers (e.g. "05")
           if (currentNumStr === '0') return null;
           currentNumStr += String(nextDigit);
         } else {
@@ -669,7 +839,6 @@
       const ops = ['+', '-', '*', '=', ''];
       const solutions = [];
 
-      // Loop through all 3,125 operator assignments
       for (let o0 of ops) {
         for (let o1 of ops) {
           for (let o2 of ops) {
@@ -677,7 +846,6 @@
               for (let o4 of ops) {
                 const currentOps = [o0, o1, o2, o3, o4];
 
-                // Check 1: Exactly one '=' must exist
                 let eqCount = 0;
                 let eqIndex = -1;
                 for (let i = 0; i < 5; i++) {
@@ -688,11 +856,9 @@
                 }
                 if (eqCount !== 1) continue;
 
-                // Left side: digits[0..eqIndex], operators[0..eqIndex-1]
                 const leftDigits = digits.slice(0, eqIndex + 1);
                 const leftOps = currentOps.slice(0, eqIndex);
 
-                // Right side: digits[eqIndex+1..5], operators[eqIndex+1..4]
                 const rightDigits = digits.slice(eqIndex + 1);
                 const rightOps = currentOps.slice(eqIndex + 1);
 
@@ -744,7 +910,6 @@
           break;
         }
 
-        // Increment seed if no solution exists
         currentSeed = (currentSeed + 1) >>> 0;
         attempts++;
       }
@@ -760,18 +925,28 @@
       };
     }
 
-    // --- State & DOM Initialization ---
+    // --- Step 3: Game State & Precision Stopwatch Engine ---
+    let gameState = 'READY'; // 'READY' | 'COUNTDOWN' | 'PLAYING' | 'FINISHED'
     const TOTAL_SLOTS = 5;
     let selectedSlotIndex = 0;
     const slotValues = Array(TOTAL_SLOTS).fill('');
 
+    let timerStartTime = 0;
+    let timerAnimFrame = null;
+    let elapsedMs = 0;
+
     // DOM Elements
+    const boardContainer = document.getElementById('boardContainer');
+    const boardStartOverlay = document.getElementById('boardStartOverlay');
+    const btnStartGame = document.getElementById('btnStartGame');
+    const keypadContainer = document.getElementById('keypadContainer');
+    const countdownOverlay = document.getElementById('countdownOverlay');
+    const countdownNumber = document.getElementById('countdownNumber');
     const opSlots = document.querySelectorAll('.op-slot');
     const numCards = document.querySelectorAll('.num-card');
     const helpModal = document.getElementById('helpModal');
     const btnHelp = document.getElementById('btnHelp');
     const btnCloseModal = document.getElementById('btnCloseModal');
-    const keypad = document.querySelector('.keypad-container');
     const stopwatchDisplay = document.getElementById('stopwatchDisplay');
 
     // Initialize Game Board with Daily Digits
@@ -784,8 +959,74 @@
       });
     }
 
+    // Stopwatch formatting (MM:SS.ms)
+    function formatStopwatch(ms) {
+      const totalSeconds = Math.floor(ms / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      const hundredths = Math.floor((ms % 1000) / 10);
+      return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(hundredths).padStart(2, '0')}`;
+    }
+
+    // Stopwatch Loop with performance.now()
+    function updateStopwatch() {
+      if (gameState !== 'PLAYING') return;
+      const now = performance.now();
+      elapsedMs = now - timerStartTime;
+      stopwatchDisplay.textContent = formatStopwatch(elapsedMs);
+      timerAnimFrame = requestAnimationFrame(updateStopwatch);
+    }
+
+    // 3-2-1 Countdown Routine
+    function startCountdown() {
+      if (gameState !== 'READY') return;
+      gameState = 'COUNTDOWN';
+
+      countdownOverlay.classList.add('show');
+
+      const steps = [
+        { text: '3', class: 'pop-3', duration: 400 },
+        { text: '2', class: 'pop-2', duration: 400 },
+        { text: '1', class: 'pop-1', duration: 400 },
+        { text: 'GO!', class: 'pop-go', duration: 450 }
+      ];
+
+      let stepIdx = 0;
+
+      function runStep() {
+        if (stepIdx < steps.length) {
+          const current = steps[stepIdx];
+          countdownNumber.className = 'countdown-number ' + current.class;
+          countdownNumber.textContent = current.text;
+          stepIdx++;
+          setTimeout(runStep, current.duration);
+        } else {
+          // Finish countdown & transition to PLAYING
+          countdownOverlay.classList.remove('show');
+          startGame();
+        }
+      }
+
+      runStep();
+    }
+
+    // Start Playing
+    function startGame() {
+      gameState = 'PLAYING';
+      boardContainer.classList.remove('ready-state');
+      keypadContainer.classList.remove('disabled');
+
+      // Select first slot
+      selectSlot(0);
+
+      // Start precision stopwatch
+      timerStartTime = performance.now();
+      timerAnimFrame = requestAnimationFrame(updateStopwatch);
+    }
+
     // Slot Selection
     function selectSlot(index) {
+      if (gameState !== 'PLAYING') return;
       if (index < 0) index = 0;
       if (index >= TOTAL_SLOTS) index = TOTAL_SLOTS - 1;
       selectedSlotIndex = index;
@@ -802,6 +1043,7 @@
 
     // Insert Operator
     function insertOperator(op) {
+      if (gameState !== 'PLAYING') return;
       slotValues[selectedSlotIndex] = op;
       const currentSlot = opSlots[selectedSlotIndex];
       currentSlot.textContent = op;
@@ -815,13 +1057,13 @@
 
     // Clear Slot
     function clearCurrentSlot() {
+      if (gameState !== 'PLAYING') return;
       if (slotValues[selectedSlotIndex] !== '') {
         slotValues[selectedSlotIndex] = '';
         const currentSlot = opSlots[selectedSlotIndex];
         currentSlot.textContent = '';
         currentSlot.classList.remove('filled');
       } else if (selectedSlotIndex > 0) {
-        // If current is already empty, move to previous and clear it
         selectSlot(selectedSlotIndex - 1);
         slotValues[selectedSlotIndex] = '';
         const prevSlot = opSlots[selectedSlotIndex];
@@ -830,16 +1072,21 @@
       }
     }
 
+    // Event Listeners for Start Button
+    btnStartGame.addEventListener('click', startCountdown);
+
     // Event Listeners for Slots
     opSlots.forEach((slot) => {
       slot.addEventListener('click', () => {
+        if (gameState !== 'PLAYING') return;
         const idx = parseInt(slot.dataset.slotIdx, 10);
         selectSlot(idx);
       });
     });
 
     // Keypad Actions
-    keypad.addEventListener('click', (e) => {
+    keypadContainer.addEventListener('click', (e) => {
+      if (gameState !== 'PLAYING') return;
       const btn = e.target.closest('.key-btn');
       if (!btn) return;
 
@@ -866,6 +1113,14 @@
         return;
       }
 
+      if (gameState === 'READY' && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        startCountdown();
+        return;
+      }
+
+      if (gameState !== 'PLAYING') return;
+
       if (['+', '-', '*', '='].includes(e.key)) {
         e.preventDefault();
         insertOperator(e.key);
@@ -884,11 +1139,11 @@
       }
     });
 
-    // Submit handler (Mock for step 1/2)
+    // Submit handler (Mock for step 3)
     function handleSubmit() {
+      if (gameState !== 'PLAYING') return;
       const isComplete = slotValues.every(val => val !== '');
       if (!isComplete) {
-        // Visual feedback for incomplete slots
         opSlots.forEach((slot, idx) => {
           if (slotValues[idx] === '') {
             slot.style.borderColor = '#ef4444';
@@ -899,7 +1154,7 @@
         });
         return;
       }
-      alert('입력된 수식: ' + dailyGame.digits.map((d, i) => d + (slotValues[i] || '')).join(' '));
+      alert(`[결과] 입력된 수식: ${dailyGame.digits.map((d, i) => d + (slotValues[i] || '')).join('')}\n걸린 시간: ${stopwatchDisplay.textContent}`);
     }
 
     // Modal Control
@@ -916,9 +1171,6 @@
     helpModal.addEventListener('click', (e) => {
       if (e.target === helpModal) closeModal();
     });
-
-    // Initialize first slot focus
-    selectSlot(0);
   </script>
 </body>
 
