@@ -1435,12 +1435,13 @@
         const raw = localStorage.getItem('speed_equal_streak');
         return raw ? parseInt(raw, 10) : 0;
       },
-      recordDailySuccess(todayDate, timeStr, equation, elapsedMs) {
+      recordDailySuccess(todayDate, timeStr, equation, elapsedMs, attempts = 1) {
         const history = this.getHistory();
         history[todayDate] = {
           timeStr,
           equation,
           elapsedMs,
+          attempts,
           timestamp: Date.now()
         };
         localStorage.setItem('speed_equal_history', JSON.stringify(history));
@@ -1483,6 +1484,8 @@
     let timerStartTime = 0;
     let timerAnimFrame = null;
     let elapsedMs = 0;
+    let wrongAttempts = 0;
+    let lastTotalAttempts = 1;
     let toastTimeout = null;
 
     // DOM Elements
@@ -1587,6 +1590,7 @@
     function setupDailyMode() {
       gameMode = 'DAILY';
       gameState = 'READY';
+      wrongAttempts = 0;
       cancelAnimationFrame(timerAnimFrame);
 
       currentDailyGame = generateDailyGame();
@@ -1633,6 +1637,7 @@
     function setupPracticeMode() {
       gameMode = 'PRACTICE';
       gameState = 'READY';
+      wrongAttempts = 0;
       cancelAnimationFrame(timerAnimFrame);
 
       currentPracticeGame = generatePracticeGame();
@@ -1666,6 +1671,7 @@
     function startCountdown() {
       if (gameState !== 'READY') return;
       gameState = 'COUNTDOWN';
+      wrongAttempts = 0;
 
       countdownOverlay.classList.add('show');
 
@@ -1858,11 +1864,13 @@
       }
 
       if (eqCount === 0) {
+        wrongAttempts++;
         triggerBoardShake('Requires exactly one = sign');
         return;
       }
 
       if (eqCount > 1) {
+        wrongAttempts++;
         triggerBoardShake('Requires exactly one = sign');
         return;
       }
@@ -1879,6 +1887,7 @@
       const rightTokens = buildSideTokens(rightDigits, rightOps);
 
       if (!leftTokens || !rightTokens) {
+        wrongAttempts++;
         triggerBoardShake('Invalid mathematical syntax');
         return;
       }
@@ -1888,12 +1897,14 @@
       const rightVal = evaluateSide(rightTokens);
 
       if (leftVal === null || rightVal === null) {
+        wrongAttempts++;
         triggerBoardShake('Cannot evaluate expression');
         return;
       }
 
       // 4. Compare results
       if (leftVal !== rightVal) {
+        wrongAttempts++;
         triggerBoardShake(`Left side (${leftVal}) does not equal right side (${rightVal})`);
         return;
       }
@@ -1902,6 +1913,9 @@
       gameState = 'FINISHED';
       cancelAnimationFrame(timerAnimFrame);
 
+      const totalAttempts = wrongAttempts + 1;
+      lastTotalAttempts = totalAttempts;
+
       const finalTimeStr = stopwatchDisplay.textContent;
       const finalEquationStr = digits.map((d, i) => d + (slotValues[i] !== undefined ? ` ${slotValues[i]} ` : '')).join('').replace(/\s+/g, ' ').trim();
 
@@ -1909,7 +1923,7 @@
 
       if (gameMode === 'DAILY') {
         const todayStr = getTodayDateString();
-        const streak = StorageService.recordDailySuccess(todayStr, finalTimeStr, finalEquationStr, elapsedMs);
+        const streak = StorageService.recordDailySuccess(todayStr, finalTimeStr, finalEquationStr, elapsedMs, totalAttempts);
         refreshStreakUI();
 
         resultModalTitle.textContent = 'SOLVED!';
@@ -1963,9 +1977,21 @@
       if (e.target === resultModal) closeResultModal();
     });
 
-    // Copy Result Formatter
-    function copyShareResult(timeStr, streak) {
+    // Compact Tile Share Formatter
+    function generateShareText(timeStr, elapsed, streak, attempts) {
       const todayStr = getTodayDateString();
+
+      // Tier Emoji
+      let tierEmoji = '🐢';
+      if (elapsed < 5000) {
+        tierEmoji = '⚡';
+      } else if (elapsed < 15000) {
+        tierEmoji = '🚀';
+      } else if (elapsed < 30000) {
+        tierEmoji = '🧠';
+      }
+
+      // Format Time
       let formattedTime = timeStr;
       const parts = timeStr.split(':');
       if (parts.length === 2) {
@@ -1974,25 +2000,46 @@
         if (min === 0) {
           formattedTime = `${sec}s`;
         } else {
-          formattedTime = `${timeStr}`;
+          formattedTime = `${timeStr}s`;
         }
       }
 
-      const shareText = `⚡ SpeedEqual ${todayStr}
-⏱️ ${formattedTime}
-🔥 Streak: ${streak}
+      // Tile Line
+      let tiles = '';
+      const wrongCount = Math.max(0, attempts - 1);
+      for (let i = 0; i < wrongCount; i++) {
+        tiles += '🟥 ';
+      }
+      tiles += '🟩';
 
+      let attemptLabel = '';
+      if (attempts === 1) {
+        attemptLabel = ' (1st try!)';
+      } else {
+        attemptLabel = ` (${attempts} attempts)`;
+      }
+      const tileLine = `${tiles}${attemptLabel}`;
+
+      return `⚡ SpeedEqual ${todayStr}
+⏱️ ${formattedTime} ${tierEmoji} | 🔥 Streak: ${streak}
+${tileLine}
+
+Can you beat my speed?
 https://speed-equal.vercel.app`;
+    }
+
+    function copyShareResult(timeStr, elapsed, streak, attempts) {
+      const shareText = generateShareText(timeStr, elapsed, streak, attempts);
 
       navigator.clipboard.writeText(shareText).then(() => {
-        showToast('Results copied to clipboard! 🚀', true);
+        showToast('Copied to clipboard! 🚀', true);
       }).catch(() => {
         showToast('Failed to copy to clipboard', false);
       });
     }
 
     btnCopyResult.addEventListener('click', () => {
-      copyShareResult(resultTimeDisplay.textContent, StorageService.getStreak());
+      copyShareResult(resultTimeDisplay.textContent, elapsedMs, StorageService.getStreak(), lastTotalAttempts);
     });
 
     btnOverlayCopyResult.addEventListener('click', () => {
@@ -2000,7 +2047,9 @@ https://speed-equal.vercel.app`;
       const history = StorageService.getHistory();
       const rec = history[todayStr];
       const timeStr = rec ? rec.timeStr : '00:00.00';
-      copyShareResult(timeStr, StorageService.getStreak());
+      const elapsed = rec ? (rec.elapsedMs || 0) : 0;
+      const attempts = rec ? (rec.attempts || 1) : 1;
+      copyShareResult(timeStr, elapsed, StorageService.getStreak(), attempts);
     });
 
     // Initialize App
