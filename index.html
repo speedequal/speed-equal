@@ -4,8 +4,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SpeedEqual - 일일 타임어택 수식 퍼즐</title>
-  <meta name="description" content="주어진 6개의 숫자 사이에 연산자를 채워 등식을 완성하는 일일 타임어택 웹 퍼즐 게임 SpeedEqual">
+  <title>SpeedEqual - 일일 6숫자 타임어택 수학 퍼즐</title>
+  <meta name="description" content="매일 새로운 6개의 숫자 사이에 연산자를 채워 등식을 완성하는 일일 타임어택 수학 퍼즐 게임 SpeedEqual">
+  <meta name="keywords" content="SpeedEqual, 수학퍼즐, 워들, Wordle, Nerdle, 타임어택, 사칙연산 게임, 웹게임">
+  <meta name="author" content="SpeedEqual">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://speed-equal.vercel.app">
+  <meta property="og:title" content="SpeedEqual - 일일 6숫자 타임어택 수학 퍼즐">
+  <meta property="og:description" content="매일 새로운 6개 숫자 사이의 연산자를 맞춰 등식을 완성하세요! 당신의 스피드는 몇 초?">
+  <meta property="og:image" content="https://speed-equal.vercel.app/og-image.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://speed-equal.vercel.app">
+  <meta property="twitter:title" content="SpeedEqual - 일일 6숫자 타임어택 수학 퍼즐">
+  <meta property="twitter:description" content="매일 새로운 6개 숫자 사이의 연산자를 맞춰 등식을 완성하세요! 당신의 스피드는 몇 초?">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -95,6 +111,12 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .logo {
       display: flex;
       align-items: center;
@@ -112,6 +134,28 @@
       color: #38bdf8;
       -webkit-text-fill-color: #38bdf8;
       margin-left: 2px;
+    }
+
+    .mode-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      display: none;
+    }
+
+    .mode-tag.practice {
+      display: inline-block;
+      background: rgba(168, 85, 247, 0.2);
+      border: 1px solid #a855f7;
+      color: #c084fc;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .icon-btn {
@@ -147,9 +191,9 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 24px;
+      gap: 20px;
       width: 100%;
-      padding: 8px 0;
+      padding: 4px 0;
     }
 
     /* Stopwatch Display */
@@ -182,6 +226,13 @@
       box-shadow: var(--shadow-card);
       min-width: 220px;
       text-align: center;
+      transition: color 0.2s ease;
+    }
+
+    .stopwatch-display.practice {
+      color: #c084fc;
+      text-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+      border-color: rgba(168, 85, 247, 0.25);
     }
 
     /* Board Container & Start Overlay */
@@ -232,17 +283,37 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(3px);
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(4px);
       z-index: 10;
       transition: all 0.3s ease;
+      padding: 16px;
+      text-align: center;
     }
 
     .board-container:not(.ready-state) .board-start-overlay {
       opacity: 0;
       pointer-events: none;
       visibility: hidden;
+    }
+
+    .completed-message-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .completed-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #10b981;
+    }
+
+    .completed-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
     }
 
     .btn-start-game {
@@ -271,6 +342,28 @@
 
     .btn-start-game:active {
       transform: translateY(1px) scale(0.97);
+    }
+
+    .btn-practice-start {
+      background: linear-gradient(135deg, #a855f7, #7e22ce);
+      color: #ffffff;
+      border: 1px solid #c084fc;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-practice-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(168, 85, 247, 0.5);
     }
 
     @keyframes pulseButton {
@@ -638,14 +731,28 @@
       letter-spacing: 0.05em;
     }
 
+    .result-streak-text {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fbbf24;
+      text-align: center;
+      margin-top: 4px;
+    }
+
     .result-actions {
       display: flex;
-      gap: 10px;
+      flex-direction: column;
+      gap: 8px;
       margin-top: 10px;
     }
 
+    .result-actions-row {
+      display: flex;
+      gap: 8px;
+    }
+
     .btn-action-primary {
-      flex: 2;
+      flex: 1;
       background: linear-gradient(135deg, #10b981, #059669);
       border: 1px solid #34d399;
       color: #ffffff;
@@ -683,11 +790,38 @@
       padding: 12px;
       border-radius: 12px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
       transition: all 0.15s ease;
     }
 
     .btn-action-secondary:hover {
       background: var(--bg-surface-hover);
+    }
+
+    .btn-action-purple {
+      background: linear-gradient(135deg, #a855f7, #7e22ce);
+      border: 1px solid #c084fc;
+      color: #ffffff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+      transition: all 0.15s ease;
+    }
+
+    .btn-action-purple:hover {
+      background: linear-gradient(135deg, #c084fc, #9333ea);
+      transform: translateY(-1px);
     }
 
     /* Modal */
@@ -816,19 +950,25 @@
   <div class="app-container">
     <!-- 1. Header -->
     <header>
-      <div class="streak-badge" title="연속 완료 스트릭">
+      <div class="streak-badge" id="streakBadge" title="연속 완료 스트릭">
         <span>🔥</span>
         <span id="streakCount">0</span>
       </div>
-      <h1 class="logo">Speed<span class="logo-eq">Equal</span></h1>
-      <button class="icon-btn" id="btnHelp" aria-label="게임 방법 안내">?</button>
+      <div class="logo-container">
+        <h1 class="logo">Speed<span class="logo-eq">Equal</span></h1>
+        <span class="mode-tag practice" id="modeTag">연습</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="btnReturnDaily" style="display: none;" title="오늘의 도전으로 돌아가기">🏠</button>
+        <button class="icon-btn" id="btnHelp" aria-label="게임 방법 안내">?</button>
+      </div>
     </header>
 
     <!-- 2. Central Area -->
     <main class="game-area">
       <!-- Stopwatch Display -->
       <div class="stopwatch-wrapper">
-        <span class="stopwatch-label">Timer</span>
+        <span class="stopwatch-label" id="stopwatchLabel">Daily Challenge</span>
         <div class="stopwatch-display" id="stopwatchDisplay">00:00.00</div>
       </div>
 
@@ -836,12 +976,39 @@
       <div class="board-container ready-state" id="boardContainer">
         <!-- Start Challenge Overlay -->
         <div class="board-start-overlay" id="boardStartOverlay">
-          <button class="btn-start-game" id="btnStartGame">
-            <span>⚡</span> 오늘의 도전 START
-          </button>
+          <!-- State 1: Ready to Start Daily -->
+          <div id="overlayReadyDaily" style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+            <button class="btn-start-game" id="btnStartGame">
+              <span>⚡</span> 오늘의 도전 START
+            </button>
+            <button class="btn-practice-start" id="btnGoPracticeFromReady">
+              <span>🎮</span> 무제한 연습 모드
+            </button>
+          </div>
+
+          <!-- State 2: Daily Already Completed -->
+          <div id="overlayCompletedDaily" class="completed-message-box" style="display: none;">
+            <span class="completed-title">오늘의 도전 완료! 🔥</span>
+            <span class="completed-desc" id="completedDescText">오늘 기록: 00:00.00</span>
+            <div style="display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; justify-content: center;">
+              <button class="btn-action-primary" id="btnOverlayCopyResult" style="padding: 9px 18px; font-size: 0.95rem;">
+                <span>📋</span> 결과 복사
+              </button>
+              <button class="btn-practice-start" id="btnGoPracticeFromCompleted" style="padding: 9px 18px; font-size: 0.95rem;">
+                <span>🎮</span> 무제한 연습 모드
+              </button>
+            </div>
+          </div>
+
+          <!-- State 3: Ready to Start Practice -->
+          <div id="overlayReadyPractice" style="display: none; flex-direction: column; align-items: center; gap: 12px;">
+            <button class="btn-start-game" id="btnStartPracticeGame" style="background: linear-gradient(135deg, #a855f7, #7e22ce); border-color: #c084fc;">
+              <span>🎮</span> 연습 문제 START
+            </button>
+          </div>
         </div>
 
-        <span class="board-hint">연산자 슬롯을 선택하고 하단 키패드로 채워보세요</span>
+        <span class="board-hint" id="boardHintText">연산자 슬롯을 선택하고 하단 키패드로 채워보세요</span>
         <div class="equation-row" id="equationRow">
           <!-- Item 0: Num1 -->
           <div class="num-card" data-num-idx="0">3</div>
@@ -918,6 +1085,7 @@
         <p><strong>⏱ 타임어택:</strong> 시작과 동시에 스톱워치가 동작합니다. 가능한 한 가장 빠른 시간 안에 등식을 완성하고 <strong>[제출(GO)]</strong> 버튼을 누르세요.
         </p>
         <p><strong>💡 팁:</strong> 하단 키패드의 <code>◀</code>, <code>▶</code> 버튼 또는 슬롯을 직접 탭하여 입력할 위치를 바꿀 수 있습니다.</p>
+        <p><strong>🎮 연습 모드:</strong> 오늘의 도전을 마친 후에도 무제한으로 새로운 문제를 연습할 수 있습니다.</p>
       </div>
     </div>
   </div>
@@ -925,9 +1093,9 @@
   <!-- Result (Success) Modal -->
   <div class="modal-overlay" id="resultModal" role="dialog" aria-modal="true">
     <div class="modal-card">
-      <div class="result-badge">🎉</div>
-      <div class="modal-header" style="justify-content: center; margin-bottom: 8px;">
-        <h2 class="modal-title" style="font-size: 1.6rem; color: #10b981;">CLEAR!</h2>
+      <div class="result-badge" id="resultBadge">🎉</div>
+      <div class="modal-header" style="justify-content: center; margin-bottom: 4px;">
+        <h2 class="modal-title" id="resultModalTitle" style="font-size: 1.6rem; color: #10b981;">CLEAR!</h2>
       </div>
       <div class="modal-content">
         <!-- Clear Time Display -->
@@ -942,12 +1110,30 @@
           <span class="result-equation-value" id="resultEquationDisplay">2 + 3 = 5</span>
         </div>
 
+        <!-- Streak Text (Daily Mode Only) -->
+        <div class="result-streak-text" id="resultStreakText">🔥 1일 연속 성공</div>
+
         <!-- Action Buttons -->
         <div class="result-actions">
-          <button class="btn-action-primary" id="btnCopyResult">
-            <span>📋</span> 결과 복사하기
-          </button>
-          <button class="btn-action-secondary" id="btnCloseResult">
+          <div class="result-actions-row" id="dailyActionsRow">
+            <button class="btn-action-primary" id="btnCopyResult">
+              <span>📋</span> 결과 복사하기
+            </button>
+            <button class="btn-action-purple" id="btnGoPracticeFromResult">
+              <span>🎮</span> 연습 모드
+            </button>
+          </div>
+
+          <div class="result-actions-row" id="practiceActionsRow" style="display: none;">
+            <button class="btn-action-purple" id="btnNextPractice">
+              <span>🔄</span> 다음 연습 문제
+            </button>
+            <button class="btn-action-secondary" id="btnReturnDailyFromResult">
+              <span>🏠</span> 오늘 도전으로
+            </button>
+          </div>
+
+          <button class="btn-action-secondary" id="btnCloseResult" style="margin-top: 2px;">
             닫기
           </button>
         </div>
@@ -956,11 +1142,20 @@
   </div>
 
   <script>
-    // --- Step 2: Daily Seed PRNG & Brute-force Solver ---
+    // --- Step 2 & 5: PRNG, Storage & Solvers ---
 
-    // 1. Convert Date string (YYYY-MM-DD) to a 32-bit unsigned integer seed
+    // 1. Date formatting & Seed conversion
     function getTodayDateString() {
       const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function getYesterdayDateString() {
+      const now = new Date();
+      now.setDate(now.getDate() - 1);
       const year = now.getFullYear();
       const month = String(now.getMonth() + 1).padStart(2, '0');
       const day = String(now.getDate()).padStart(2, '0');
@@ -987,7 +1182,7 @@
       };
     }
 
-    // 3. Mathematical Expression Evaluator with standard operator precedence (* before +,-)
+    // 3. Expression Evaluator with standard operator precedence (* before +,-)
     function evaluateSide(tokens) {
       if (!tokens || tokens.length === 0 || tokens.length % 2 === 0) {
         return null;
@@ -1004,7 +1199,7 @@
         } else if (op === '+' || op === '-') {
           reducedTokens.push(op, nextNum);
         } else {
-          return null; // Invalid operator
+          return null;
         }
       }
 
@@ -1023,7 +1218,6 @@
       return Number.isFinite(result) ? result : null;
     }
 
-    // Parse a sequence of digits and operators into tokens (handling '' as concatenation)
     function buildSideTokens(digits, operators) {
       const tokens = [];
       let currentNumStr = String(digits[0]);
@@ -1098,7 +1292,7 @@
       return solutions;
     }
 
-    // 5. Generate guaranteed solvable 6 digits for today
+    // 5. Daily Game Generator
     function generateDailyGame() {
       const todayDateStr = getTodayDateString();
       let initialSeed = hashStringToSeed(todayDateStr);
@@ -1125,15 +1319,32 @@
         attempts++;
       }
 
-      console.log(`[SpeedEqual] Date: ${todayDateStr} | Base Seed: ${initialSeed} | Resolved Seed: ${currentSeed} (Attempts: ${attempts + 1})`);
-      console.log(`[SpeedEqual] Daily Digits:`, finalDigits);
-      console.log(`[SpeedEqual] Guaranteed Solutions Found (${finalSolutions.length}):`, finalSolutions.map(s => s.equation));
-
       return {
         date: todayDateStr,
         digits: finalDigits,
         solutions: finalSolutions
       };
+    }
+
+    // 6. Random Practice Game Generator
+    function generatePracticeGame() {
+      let attempts = 0;
+      while (attempts < 500) {
+        const candidateDigits = [];
+        for (let i = 0; i < 6; i++) {
+          candidateDigits.push(Math.floor(Math.random() * 9) + 1);
+        }
+
+        const solutions = solve6Digits(candidateDigits);
+        if (solutions.length > 0) {
+          return {
+            digits: candidateDigits,
+            solutions: solutions
+          };
+        }
+        attempts++;
+      }
+      return { digits: [2, 3, 5, 3, 4, 4], solutions: [] };
     }
 
     // --- Pure HTML5 Canvas Confetti System ---
@@ -1209,11 +1420,64 @@
       }
     }
 
-    // --- Step 3 & 4: Game State, Precision Stopwatch & Verification ---
+    // --- Storage Service ---
+    const StorageService = {
+      getLastDate() {
+        return localStorage.getItem('speed_equal_last_date');
+      },
+      getHistory() {
+        const raw = localStorage.getItem('speed_equal_history');
+        return raw ? JSON.parse(raw) : {};
+      },
+      getStreak() {
+        const raw = localStorage.getItem('speed_equal_streak');
+        return raw ? parseInt(raw, 10) : 0;
+      },
+      recordDailySuccess(todayDate, timeStr, equation, elapsedMs) {
+        const history = this.getHistory();
+        history[todayDate] = {
+          timeStr,
+          equation,
+          elapsedMs,
+          timestamp: Date.now()
+        };
+        localStorage.setItem('speed_equal_history', JSON.stringify(history));
+
+        // Streak calculation
+        const lastDate = this.getLastDate();
+        const yesterday = getYesterdayDateString();
+        let currentStreak = this.getStreak();
+
+        if (lastDate === yesterday) {
+          currentStreak += 1;
+        } else if (lastDate === todayDate) {
+          // Already counted today
+        } else {
+          currentStreak = 1;
+        }
+
+        localStorage.setItem('speed_equal_streak', currentStreak);
+        localStorage.setItem('speed_equal_last_date', todayDate);
+
+        // Best time
+        const bestTime = localStorage.getItem('speed_equal_best_time');
+        if (!bestTime || elapsedMs < parseInt(bestTime, 10)) {
+          localStorage.setItem('speed_equal_best_time', elapsedMs);
+        }
+
+        return currentStreak;
+      }
+    };
+
+    // --- State & DOM Initialization ---
+    let gameMode = 'DAILY'; // 'DAILY' | 'PRACTICE'
     let gameState = 'READY'; // 'READY' | 'COUNTDOWN' | 'PLAYING' | 'FINISHED'
     const TOTAL_SLOTS = 5;
     let selectedSlotIndex = 0;
-    const slotValues = Array(TOTAL_SLOTS).fill('');
+    let slotValues = Array(TOTAL_SLOTS).fill('');
+
+    let currentDailyGame = null;
+    let currentPracticeGame = null;
 
     let timerStartTime = 0;
     let timerAnimFrame = null;
@@ -1223,7 +1487,21 @@
     // DOM Elements
     const boardContainer = document.getElementById('boardContainer');
     const boardStartOverlay = document.getElementById('boardStartOverlay');
+    const overlayReadyDaily = document.getElementById('overlayReadyDaily');
+    const overlayCompletedDaily = document.getElementById('overlayCompletedDaily');
+    const overlayReadyPractice = document.getElementById('overlayReadyPractice');
+    const completedDescText = document.getElementById('completedDescText');
     const btnStartGame = document.getElementById('btnStartGame');
+    const btnStartPracticeGame = document.getElementById('btnStartPracticeGame');
+    const btnGoPracticeFromReady = document.getElementById('btnGoPracticeFromReady');
+    const btnGoPracticeFromCompleted = document.getElementById('btnGoPracticeFromCompleted');
+    const btnGoPracticeFromResult = document.getElementById('btnGoPracticeFromResult');
+    const btnNextPractice = document.getElementById('btnNextPractice');
+    const btnReturnDaily = document.getElementById('btnReturnDaily');
+    const btnReturnDailyFromResult = document.getElementById('btnReturnDailyFromResult');
+    const btnOverlayCopyResult = document.getElementById('btnOverlayCopyResult');
+    const modeTag = document.getElementById('modeTag');
+    const stopwatchLabel = document.getElementById('stopwatchLabel');
     const keypadContainer = document.getElementById('keypadContainer');
     const countdownOverlay = document.getElementById('countdownOverlay');
     const countdownNumber = document.getElementById('countdownNumber');
@@ -1235,40 +1513,37 @@
     const stopwatchDisplay = document.getElementById('stopwatchDisplay');
     const toastContainer = document.getElementById('toastContainer');
     const resultModal = document.getElementById('resultModal');
+    const resultModalTitle = document.getElementById('resultModalTitle');
+    const resultBadge = document.getElementById('resultBadge');
     const resultTimeDisplay = document.getElementById('resultTimeDisplay');
     const resultEquationDisplay = document.getElementById('resultEquationDisplay');
+    const resultStreakText = document.getElementById('resultStreakText');
+    const dailyActionsRow = document.getElementById('dailyActionsRow');
+    const practiceActionsRow = document.getElementById('practiceActionsRow');
     const btnCopyResult = document.getElementById('btnCopyResult');
     const btnCloseResult = document.getElementById('btnCloseResult');
     const streakCountElem = document.getElementById('streakCount');
 
-    // Load initial streak from localStorage
-    function getStreak() {
-      const saved = localStorage.getItem('speedequal_streak');
-      return saved ? parseInt(saved, 10) : 0;
+    // Update streak UI on load
+    function refreshStreakUI() {
+      streakCountElem.textContent = StorageService.getStreak();
     }
-    streakCountElem.textContent = getStreak();
+    refreshStreakUI();
 
-    function incrementStreak() {
-      const current = getStreak();
-      const next = current + 1;
-      localStorage.setItem('speedequal_streak', next);
-      streakCountElem.textContent = next;
-    }
-
-    // Toast Function
+    // Toast Notification
     function showToast(message, isSuccess = false) {
       if (toastTimeout) clearTimeout(toastTimeout);
       toastContainer.textContent = message;
       toastContainer.className = 'toast-container show' + (isSuccess ? ' success' : '');
       toastTimeout = setTimeout(() => {
         toastContainer.classList.remove('show');
-      }, 2200);
+      }, 2400);
     }
 
-    // Trigger Shake Effect
+    // Shake Board Animation
     function triggerBoardShake(message) {
       boardContainer.classList.remove('shake');
-      void boardContainer.offsetWidth; // Trigger reflow
+      void boardContainer.offsetWidth;
       boardContainer.classList.add('shake');
       setTimeout(() => {
         boardContainer.classList.remove('shake');
@@ -1279,17 +1554,7 @@
       }
     }
 
-    // Initialize Game Board with Daily Digits
-    const dailyGame = generateDailyGame();
-    if (dailyGame.digits) {
-      numCards.forEach((card, idx) => {
-        if (dailyGame.digits[idx] !== undefined) {
-          card.textContent = dailyGame.digits[idx];
-        }
-      });
-    }
-
-    // Stopwatch formatting (MM:SS.ms)
+    // Stopwatch Formatter
     function formatStopwatch(ms) {
       const totalSeconds = Math.floor(ms / 1000);
       const minutes = Math.floor(totalSeconds / 60);
@@ -1298,13 +1563,102 @@
       return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(hundredths).padStart(2, '0')}`;
     }
 
-    // Stopwatch Loop with performance.now()
+    // Stopwatch Loop
     function updateStopwatch() {
       if (gameState !== 'PLAYING') return;
       const now = performance.now();
       elapsedMs = now - timerStartTime;
       stopwatchDisplay.textContent = formatStopwatch(elapsedMs);
       timerAnimFrame = requestAnimationFrame(updateStopwatch);
+    }
+
+    // Reset Slots
+    function resetSlots() {
+      slotValues = Array(TOTAL_SLOTS).fill('');
+      opSlots.forEach((slot) => {
+        slot.textContent = '';
+        slot.classList.remove('filled', 'active');
+      });
+      selectedSlotIndex = 0;
+    }
+
+    // Setup Daily Mode Board
+    function setupDailyMode() {
+      gameMode = 'DAILY';
+      gameState = 'READY';
+      cancelAnimationFrame(timerAnimFrame);
+
+      currentDailyGame = generateDailyGame();
+
+      // UI updates
+      modeTag.style.display = 'none';
+      btnReturnDaily.style.display = 'none';
+      stopwatchLabel.textContent = 'Daily Challenge';
+      stopwatchDisplay.className = 'stopwatch-display';
+      stopwatchDisplay.textContent = '00:00.00';
+
+      // Bind digits
+      if (currentDailyGame.digits) {
+        numCards.forEach((card, idx) => {
+          if (currentDailyGame.digits[idx] !== undefined) {
+            card.textContent = currentDailyGame.digits[idx];
+          }
+        });
+      }
+
+      resetSlots();
+      boardContainer.classList.add('ready-state');
+      keypadContainer.classList.add('disabled');
+
+      // Check if today already completed
+      const todayStr = getTodayDateString();
+      const history = StorageService.getHistory();
+      const todayRecord = history[todayStr];
+
+      if (todayRecord) {
+        overlayReadyDaily.style.display = 'none';
+        overlayReadyPractice.style.display = 'none';
+        overlayCompletedDaily.style.display = 'flex';
+        completedDescText.textContent = `오늘 기록: ${todayRecord.timeStr} (${todayRecord.equation})`;
+        stopwatchDisplay.textContent = todayRecord.timeStr;
+      } else {
+        overlayReadyDaily.style.display = 'flex';
+        overlayReadyPractice.style.display = 'none';
+        overlayCompletedDaily.style.display = 'none';
+      }
+    }
+
+    // Setup Practice Mode Board
+    function setupPracticeMode() {
+      gameMode = 'PRACTICE';
+      gameState = 'READY';
+      cancelAnimationFrame(timerAnimFrame);
+
+      currentPracticeGame = generatePracticeGame();
+
+      // UI updates
+      modeTag.style.display = 'inline-block';
+      btnReturnDaily.style.display = 'flex';
+      stopwatchLabel.textContent = 'Practice Mode';
+      stopwatchDisplay.className = 'stopwatch-display practice';
+      stopwatchDisplay.textContent = '00:00.00';
+
+      // Bind digits
+      if (currentPracticeGame.digits) {
+        numCards.forEach((card, idx) => {
+          if (currentPracticeGame.digits[idx] !== undefined) {
+            card.textContent = currentPracticeGame.digits[idx];
+          }
+        });
+      }
+
+      resetSlots();
+      boardContainer.classList.add('ready-state');
+      keypadContainer.classList.add('disabled');
+
+      overlayReadyDaily.style.display = 'none';
+      overlayCompletedDaily.style.display = 'none';
+      overlayReadyPractice.style.display = 'flex';
     }
 
     // 3-2-1 Countdown Routine
@@ -1331,7 +1685,6 @@
           stepIdx++;
           setTimeout(runStep, current.duration);
         } else {
-          // Finish countdown & transition to PLAYING
           countdownOverlay.classList.remove('show');
           startGame();
         }
@@ -1346,10 +1699,8 @@
       boardContainer.classList.remove('ready-state');
       keypadContainer.classList.remove('disabled');
 
-      // Select first slot
       selectSlot(0);
 
-      // Start precision stopwatch
       timerStartTime = performance.now();
       timerAnimFrame = requestAnimationFrame(updateStopwatch);
     }
@@ -1379,7 +1730,6 @@
       currentSlot.textContent = op;
       currentSlot.classList.add('filled');
 
-      // Auto move to next slot if available
       if (selectedSlotIndex < TOTAL_SLOTS - 1) {
         selectSlot(selectedSlotIndex + 1);
       }
@@ -1402,10 +1752,30 @@
       }
     }
 
-    // Event Listeners for Start Button
+    // Event Listeners for Start Buttons
     btnStartGame.addEventListener('click', startCountdown);
+    btnStartPracticeGame.addEventListener('click', startCountdown);
 
-    // Event Listeners for Slots
+    btnGoPracticeFromReady.addEventListener('click', setupPracticeMode);
+    btnGoPracticeFromCompleted.addEventListener('click', setupPracticeMode);
+    btnGoPracticeFromResult.addEventListener('click', () => {
+      closeResultModal();
+      setupPracticeMode();
+    });
+
+    btnNextPractice.addEventListener('click', () => {
+      closeResultModal();
+      setupPracticeMode();
+      startCountdown();
+    });
+
+    btnReturnDaily.addEventListener('click', setupDailyMode);
+    btnReturnDailyFromResult.addEventListener('click', () => {
+      closeResultModal();
+      setupDailyMode();
+    });
+
+    // Slots Click
     opSlots.forEach((slot) => {
       slot.addEventListener('click', () => {
         if (gameState !== 'PLAYING') return;
@@ -1414,7 +1784,7 @@
       });
     });
 
-    // Keypad Actions
+    // Keypad Click
     keypadContainer.addEventListener('click', (e) => {
       if (gameState !== 'PLAYING') return;
       const btn = e.target.closest('.key-btn');
@@ -1472,7 +1842,7 @@
       }
     });
 
-    // Step 4: Submission & Equation Verification Handler
+    // Submission & Equation Verification Handler
     function handleSubmit() {
       if (gameState !== 'PLAYING') return;
 
@@ -1497,7 +1867,7 @@
       }
 
       // 2. Build left and right tokens
-      const digits = dailyGame.digits;
+      const digits = (gameMode === 'DAILY' ? currentDailyGame : currentPracticeGame).digits;
       const leftDigits = digits.slice(0, eqIndex + 1);
       const leftOps = slotValues.slice(0, eqIndex);
 
@@ -1534,13 +1904,28 @@
       const finalTimeStr = stopwatchDisplay.textContent;
       const finalEquationStr = digits.map((d, i) => d + (slotValues[i] !== undefined ? ` ${slotValues[i]} ` : '')).join('').replace(/\s+/g, ' ').trim();
 
-      // Fire confetti
       launchConfetti();
 
-      // Update streak
-      incrementStreak();
+      if (gameMode === 'DAILY') {
+        const todayStr = getTodayDateString();
+        const streak = StorageService.recordDailySuccess(todayStr, finalTimeStr, finalEquationStr, elapsedMs);
+        refreshStreakUI();
 
-      // Show Result Modal after small delay
+        resultModalTitle.textContent = 'CLEAR!';
+        resultBadge.textContent = '🎉';
+        resultStreakText.style.display = 'block';
+        resultStreakText.textContent = `🔥 연속 ${streak}일차 성공!`;
+        dailyActionsRow.style.display = 'flex';
+        practiceActionsRow.style.display = 'none';
+      } else {
+        // Practice Mode Clear
+        resultModalTitle.textContent = 'PRACTICE CLEAR!';
+        resultBadge.textContent = '🎯';
+        resultStreakText.style.display = 'none';
+        dailyActionsRow.style.display = 'none';
+        practiceActionsRow.style.display = 'flex';
+      }
+
       resultTimeDisplay.textContent = finalTimeStr;
       resultEquationDisplay.textContent = finalEquationStr;
 
@@ -1560,6 +1945,9 @@
 
     function closeResultModal() {
       resultModal.classList.remove('open');
+      if (gameMode === 'DAILY') {
+        setupDailyMode();
+      }
     }
 
     btnHelp.addEventListener('click', openModal);
@@ -1574,15 +1962,48 @@
       if (e.target === resultModal) closeResultModal();
     });
 
-    // Copy Result Action
-    btnCopyResult.addEventListener('click', () => {
-      const shareText = `⚡ SpeedEqual (${dailyGame.date})\n⏱ 클리어 타임: ${resultTimeDisplay.textContent}\n🧩 수식: ${resultEquationDisplay.textContent}\n🔥 스트릭: ${getStreak()}일 연속\nhttps://speedequal.com`;
+    // Copy Result Formatter
+    function copyShareResult(timeStr, streak) {
+      const todayStr = getTodayDateString();
+      let formattedTime = timeStr;
+      const parts = timeStr.split(':');
+      if (parts.length === 2) {
+        const min = parseInt(parts[0], 10);
+        const sec = parts[1];
+        if (min === 0) {
+          formattedTime = `${sec}초`;
+        } else {
+          formattedTime = `${timeStr}`;
+        }
+      }
+
+      const shareText = `⚡ SpeedEqual (${todayStr})
+⏱️ ${formattedTime} 컷!
+🔥 연속 ${streak}일차 성공
+
+https://speed-equal.vercel.app`;
+
       navigator.clipboard.writeText(shareText).then(() => {
-        showToast('클립보드에 결과가 복사되었습니다! 📋', true);
+        showToast('클립보드에 복사되었습니다! 친구들에게 공유해보세요 🚀', true);
       }).catch(() => {
         showToast('복사에 실패했습니다.', false);
       });
+    }
+
+    btnCopyResult.addEventListener('click', () => {
+      copyShareResult(resultTimeDisplay.textContent, StorageService.getStreak());
     });
+
+    btnOverlayCopyResult.addEventListener('click', () => {
+      const todayStr = getTodayDateString();
+      const history = StorageService.getHistory();
+      const rec = history[todayStr];
+      const timeStr = rec ? rec.timeStr : '00:00.00';
+      copyShareResult(timeStr, StorageService.getStreak());
+    });
+
+    // Initialize App
+    setupDailyMode();
   </script>
 </body>
 
