@@ -1029,6 +1029,53 @@
       margin: 4px 0;
     }
 
+    /* Speed Tiers Guide Card in Help Modal */
+    .tiers-guide-card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-top: 4px;
+    }
+
+    .tiers-guide-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 12px;
+    }
+
+    .tier-item {
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #334155;
+      padding: 2px 0;
+    }
+
+    .tier-item-name {
+      font-weight: 600;
+    }
+
+    .tier-item-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
     /* Small screens adjustments */
     @media (max-width: 420px) {
       .stopwatch-display {
@@ -1179,7 +1226,7 @@
 
   <!-- Help Modal (How to Play) -->
   <div class="modal-overlay" id="helpModal" role="dialog" aria-modal="true">
-    <div class="modal-card">
+    <div class="modal-card" style="max-height: 90vh; overflow-y: auto;">
       <div class="modal-header">
         <h2 class="modal-title">How to Play</h2>
         <button class="modal-close" id="btnCloseModal" aria-label="Close">&times;</button>
@@ -1196,12 +1243,57 @@
         </div>
 
         <div class="example-box">
-          3 * 2 + 5 = 11
+          2 * 3 - 5 + 3 = 4
         </div>
 
         <div class="rule-step">
           <span class="rule-number">3</span>
           <span>Beat the clock! Solve the equation as fast as possible and press <strong>SUBMIT</strong>.</span>
+        </div>
+
+        <!-- Speed Tiers Guide -->
+        <div class="tiers-guide-card">
+          <div class="tiers-guide-title">
+            <span>🏆</span> Speed Tiers
+          </div>
+          <div class="tiers-grid">
+            <div class="tier-item">
+              <span class="tier-item-name">⚡ Tier 1: Godlike</span>
+              <span class="tier-item-time">&lt; 3s</span>
+            </div>
+            <div class="tier-item">
+              <span class="tier-item-name">👑 Tier 2: Master</span>
+              <span class="tier-item-time">&lt; 5s</span>
+            </div>
+            <div class="tier-item">
+              <span class="tier-item-name">💎 Tier 3: Diamond</span>
+              <span class="tier-item-time">&lt; 8s</span>
+            </div>
+            <div class="tier-item">
+              <span class="tier-item-name">🏆 Tier 4: Platinum</span>
+              <span class="tier-item-time">&lt; 12s</span>
+            </div>
+            <div class="tier-item">
+              <span class="tier-item-name">🥇 Tier 5: Gold</span>
+              <span class="tier-item-time">&lt; 17s</span>
+            </div>
+            <div class="tier-item">
+              <span class="tier-item-name">🥈 Tier 6: Silver</span>
+              <span class="tier-item-time">&lt; 25s</span>
+            </div>
+            <div class="tier-item">
+              <span class="tier-item-name">🥉 Tier 7: Bronze</span>
+              <span class="tier-item-time">&lt; 40s</span>
+            </div>
+            <div class="tier-item">
+              <span class="tier-item-name">🛡️ Tier 8: Iron</span>
+              <span class="tier-item-time">&lt; 60s</span>
+            </div>
+            <div class="tier-item">
+              <span class="tier-item-name">🐢 Tier 9: Turtle</span>
+              <span class="tier-item-time">60s+</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
